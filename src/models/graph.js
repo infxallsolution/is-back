@@ -2,12 +2,17 @@ import { DataTypes } from 'sequelize';
 import conectDb from '../config/db.js'
 const sequelize = conectDb()
 
+const variable = 0
 
 /*
   Tipo de grafico
   - torta 
   - barras
   - lines
+
+
+
+
 */
 
  
