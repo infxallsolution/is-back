@@ -9,7 +9,7 @@ const options = {
       description: 'Documentación de tu API con Swagger',
     },
   },
-  apis: ['path/to/routes/*.js'], // Rutas de tus archivos de ruta
+  apis: ['../routes/clientRoutes.js'], // Rutas de tus archivos de ruta
 };
 
 const specs = swaggerJsdoc(options);

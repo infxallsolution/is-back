@@ -7,6 +7,10 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
   host: process.env.DB_HOST,
   dialect: process.env.DB_DIALECT || "mssql",
   port: process.env.DB_PORT,
+  define: {
+    timestamps: true,
+    freezeTableName: true
+  },
   dialectOptions: {
     instanceName: 'sql' // Instance name of your SQL Server
   }

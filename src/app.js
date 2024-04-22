@@ -5,6 +5,9 @@ import conectDb from './config/db.js'
 import swaggerUi from "swagger-ui-express";
 import swaggerConfig  from './config/swaggerConfig.js';
 import clientRoutes from './routes/clientRoutes.js'
+import authRoutes from './routes/authRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
+
 
 dotenv.config();
 
@@ -13,6 +16,10 @@ const port = process.env.PORT || 7000;
 
 
 const app = express();
+
+app.use(express.json({limit: '50mb'}));
+
+
 app.use(cors())
 conectDb()
 app.listen(port, () => {
@@ -21,8 +28,16 @@ app.listen(port, () => {
 
 
 app.use('/api/client',clientRoutes)
+app.use('/api/auth', authRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+
+
 
 swaggerConfig(app);
+
+
+
+
 app.get('/', (req, res) => {
     res.send("API is running...");
 })

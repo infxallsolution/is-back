@@ -3,33 +3,24 @@ import conectDb from '../config/db.js'
 const sequelize = conectDb()
 
  
-const Client = sequelize.define('clients', {
+const User = sequelize.define('users', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
     defaultValue: DataTypes.UUIDV4,
   },
-  nit: {
+  username: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: true
   },
-  name: {
+  password: {
     type: DataTypes.STRING,
-    allowNull: false,
-  },
-  contact: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
-  type: {
-    type: DataTypes.UUID,
-    allowNull: false,
-  },
+    allowNull: false
+  }
 }, {
-  tableName: 'clients'
+  tableName: 'users'
 });
 
-Client.sync();
-
-export default Client;
+User.sync();
+export default User;

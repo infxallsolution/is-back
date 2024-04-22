@@ -2,34 +2,33 @@ import { DataTypes } from 'sequelize';
 import conectDb from '../config/db.js'
 const sequelize = conectDb()
 
+
+/*
+  Tipo de grafico
+  - torta 
+  - barras
+  - lines
+*/
+
  
-const Client = sequelize.define('clients', {
+const Graph = sequelize.define('graphs', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
     defaultValue: DataTypes.UUIDV4,
   },
-  nit: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
-  },
-  contact: {
-    type: DataTypes.STRING,
-    allowNull: true,
+    unique: true
   },
   type: {
     type: DataTypes.UUID,
-    allowNull: false,
-  },
+    allowNull: false
+  }
 }, {
-  tableName: 'clients'
+  tableName: 'graphs'
 });
 
-Client.sync();
-
-export default Client;
+Graph.sync();
+export default Graph;
