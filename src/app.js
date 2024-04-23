@@ -7,6 +7,8 @@ import swaggerConfig  from './config/swaggerConfig.js';
 import clientRoutes from './routes/clientRoutes.js'
 import authRoutes from './routes/authRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
+import dataDetailRoutes from './routes/dataDetailRoutes.js';
+import dataRoutes from './routes/dataRoutes.js';
 
 
 dotenv.config();
@@ -29,6 +31,8 @@ app.listen(port, () => {
 
 app.use('/api/client',clientRoutes)
 app.use('/api/auth', authRoutes);
+app.use('/api/data', dataRoutes);
+app.use('/api/datadetail', dataDetailRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
 

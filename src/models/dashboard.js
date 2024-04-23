@@ -11,10 +11,13 @@ const Dashboard = sequelize.define('dashboards', {
   },
   name: {
     type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
+    allowNull: false
   },
   type: {
+    type: DataTypes.UUID,
+    allowNull: false
+  },
+  client: {
     type: DataTypes.UUID,
     allowNull: false
   }

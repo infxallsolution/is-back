@@ -4,36 +4,28 @@ const sequelize = conectDb()
 
 const variable = 0
 
-/*
-  Tipo de grafico
-  - torta 
-  - barras
-  - lines
-
-
-
-
-*/
-
  
-const Graph = sequelize.define('graphs', {
+const Data = sequelize.define('data', {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
     defaultValue: DataTypes.UUIDV4,
   },
   name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
+    type: DataTypes.STRING(50),
+    allowNull: false
+  },
+  clientId: {
+    type: DataTypes.UUID,
+    allowNull: false
   },
   type: {
     type: DataTypes.UUID,
-    allowNull: false
+    allowNull: true
   }
 }, {
-  tableName: 'graphs'
+  tableName: 'data'
 });
 
-Graph.sync();
-export default Graph;
+Data.sync();
+export default Data;

@@ -34,23 +34,26 @@ const insertClient= async(body)=>{
 
 
 
-const updateByNit= async(clientNit,newName)=>{
+const updateByNit= async(clientNit,newName,newType)=>{
+
+console.log(newType)
+
   try{
     var res = await Client.update(
-      { name: newName},
+      { name: newName, type:newType},
       { where: { nit: clientNit } } 
     )
-    return { message: 'Cliente actualizado', status:200 };
+    return { message: 'Cliente actualizado por nit', status:200 };
   }catch(err){
     return { message: 'Error en el servidor', status:500, error:err };
   }  
 }
 
 
-const updateClient= async(idClient,newName)=>{
+const updateClient= async(idClient,newName,newType)=>{
   try{
     var res = await Client.update(
-      { name: newName},
+      { name: newName, type:newType},
       { where: { id: idClient } } 
     )
     return { message: 'Cliente actualizado', status:200 };
