@@ -3,21 +3,32 @@ import Client from '../../models/client.js'
 import { v4 as uuidv4} from 'uuid';
 import mysql from  'mysql2'
 
-
-
 const getClient= async(idClient)=>{
-  const client = await Client.findOne( { where : {id:idClient}});
-  return client
+  try{
+    const client = await Client.findOne( { where : {id:idClient}});
+    return { client, status:200 };
+  }catch(err){
+    return { client:null, status:500 , error:err };
+  }  
+
 }
 
-const getClientByNit= async(nit)=>{
-  const client = await Client.findOne( { where : {nit:nit}});
-  return client
+const getClientByNit= async(nit)=>{ 
+  try{
+    const client = await Client.findOne( { where : {nit:nit}});
+    return { client, status:200 };
+  }catch(err){
+    return { client:null, status:500 , error:err };
+  }  
 }
 
-const getList= async()=>{
-    const list = await Client.findAll();
-    return list
+const getList= async()=>{ 
+    try{
+      const list = await Client.findAll();
+      return { list:list, status:200 };
+    }catch(err){
+      return { list:null, status:500 , error:err };
+    }  
 }
 
 
@@ -35,9 +46,6 @@ const insertClient= async(body)=>{
 
 
 const updateByNit= async(clientNit,newName,newType)=>{
-
-console.log(newType)
-
   try{
     var res = await Client.update(
       { name: newName, type:newType},

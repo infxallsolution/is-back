@@ -30,7 +30,7 @@ async function updateDashboardController(req,res){
 
 async function listDashboardsController(req,res){ 
     let dataresult = await dashboardServices.getList();    
-    return res.status(200).json(dataresult);   
+    return res.status(dataresult.status).json(dataresult.list);   
 }
 
 

@@ -10,9 +10,13 @@ const get= async(idFind)=>{
   return model
 }
 
-const getList= async()=>{
+const getList= async()=>{ 
+  try{
     const list = await Data.findAll();
-    return list
+    return { list:list, status:200 };
+  }catch(err){
+    return { list:null, status:500 , error:err };
+  }  
 }
 
 

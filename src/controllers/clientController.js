@@ -61,35 +61,33 @@ async function updateClientController(req, res) {
  */
 async function listClientsController(req, res) {
     let dataresult = await clientServices.getList();
-    return res.status(200).json(dataresult);
+    return res.status(dataresult.status).json(dataresult.list);
 }
 
-
-
-const getClientController = asyncHandler(async (req, res) => {
+async function getClientController(req, res) {
     if (!req.query.id) {
         throw "Se necesita el id del cliente";
     }
     const idClient = req.query.id;
     let dataresult = await clientServices.getClient(idClient);
-    return res.status(200).json(dataresult);
-});
+    return res.status(dataresult.status).json(dataresult.client);
+};
 
 
-const getClientByNitController = asyncHandler(async (req, res) => {
+
+async function getClientByNitController(req, res) {
     if (!req.query.nit) {
         throw "Se necesita el id del cliente";
     }
     const nitClient = req.query.nit;
     let dataresult = await clientServices.getClientByNit(nitClient);
-    return res.status(200).json(dataresult);
-});
+    return res.status(dataresult.status).json(dataresult.client);
+};
 
 
 
 
 async function deleteClientController(req, res) {
-
     res.send("deleteClient");
 }
 

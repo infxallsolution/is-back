@@ -19,7 +19,7 @@ async function insertController(req,res){
 
 async function listController(req,res){ 
     let dataresult = await dataService.getList();    
-    return res.status(200).json(dataresult);   
+    return res.status(dataresult.status).json(dataresult.list);   
 }
 
 
