@@ -1,6 +1,9 @@
 
 
 import ModuleClient from '../../models/moduleClient.js'
+import Client from '../../models/client.js'
+import Module from '../../models/module.js'
+import { Sequelize } from "sequelize";
 import { v4 as uuidv4} from 'uuid';
 import mysql from  'mysql2'
 
@@ -16,7 +19,7 @@ const getModulesByClient= async(id)=>{
   return model
 }
 
-const getList= async()=>{ 
+const getList2= async()=>{ 
   try{
     const list = await ModuleClient.findAll();
     return { list:list, status:200 };
@@ -24,6 +27,38 @@ const getList= async()=>{
     return { list:null, status:500 , error:err };
   }  
 }
+
+
+const getList= async()=>{ 
+
+  //Client.hasMany(ModuleClient);
+  ModuleClient.belongsTo(Client);
+  ModuleClient.belongsTo(Module);
+
+  try{
+    const list = await ModuleClient.findAll({
+      attributes:  { exclude: ['createdAt', 'updatedAt'] },
+      include: [{
+        model: Client,
+        attributes: ['name'],
+        on: {
+          'clienteId': Sequelize.col('Client.id')
+        }
+      },{
+        model: Module,
+        attributes: ['name'], 
+        on: {
+          'moduleId': Sequelize.col('Module.id')
+        }
+      }]
+    });
+    
+    return { list:list, status:200 };
+  }catch(err){
+    return { list:null, status:500 , error:err };
+  }  
+}
+
 
 
 const insert= async(body)=>{

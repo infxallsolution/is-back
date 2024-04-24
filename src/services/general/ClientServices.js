@@ -5,7 +5,12 @@ import mysql from  'mysql2'
 
 const getClient= async(idClient)=>{
   try{
-    const client = await Client.findOne( { where : {id:idClient}});
+    const client = await Client.findOne( 
+      { 
+        where : {id:idClient},
+        attributes: { exclude: ['createdAt', 'updatedAt'] }
+      }
+      );
     return { client, status:200 };
   }catch(err){
     return { client:null, status:500 , error:err };
@@ -16,7 +21,7 @@ const getClient= async(idClient)=>{
 
 const getList= async()=>{ 
     try{
-      const list = await Client.findAll();
+      const list = await Client.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] }});
       return { list:list, status:200 };
     }catch(err){
       return { list:null, status:500 , error:err };

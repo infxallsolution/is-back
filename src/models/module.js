@@ -14,6 +14,10 @@ const Module = sequelize.define('modules', {
   name: {
     type: DataTypes.STRING(50),
     allowNull: false
+  },
+  state: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false
   }
 }, {
   tableName: 'modules'

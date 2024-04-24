@@ -31,8 +31,8 @@ const Client = sequelize.define('clients', {
     allowNull: true,
   },
   type: {
-    type: DataTypes.UUID,
-    allowNull: true,
+    type: DataTypes.STRING(20),
+    allowNull: false,
   },
 }, {
   tableName: 'clients'

@@ -11,6 +11,7 @@ import dataDetailRoutes from './routes/dataDetailRoutes.js';
 import dataRoutes from './routes/dataRoutes.js';
 import moduleRoutes from './routes/moduleRoutes.js';
 import moduleClientRoutes from './routes/moduleClientRoutes.js';
+import ModuleSeeder from './seeders/ModuleSeeder.js';
 
 
 dotenv.config();
@@ -29,6 +30,9 @@ conectDb()
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`)
 })
+
+
+ModuleSeeder.createModules()
 
 
 app.use('/api/client',clientRoutes)

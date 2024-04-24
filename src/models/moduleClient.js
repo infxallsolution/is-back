@@ -18,6 +18,10 @@ const ModuleClient = sequelize.define('moduleclients', {
   moduleId: {
     type: DataTypes.INTEGER,
     allowNull: false
+  },
+  state: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false
   }
 }, 
 {

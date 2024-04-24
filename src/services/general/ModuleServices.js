@@ -7,13 +7,16 @@ import mysql from  'mysql2'
 
 
 const get= async(idFind)=>{
-  const model = await Module.findOne( { where : {id:idFind}});
+  const model = await Module.findOne( 
+    { where : {id:idFind}},
+    { attributes: { exclude: ['createdAt', 'updatedAt'] }}
+);
   return model
 }
 
 const getList= async()=>{ 
   try{
-    const list = await Module.findAll();
+    const list = await Module.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] }});
     return { list:list, status:200 };
   }catch(err){
     return { list:null, status:500 , error:err };
