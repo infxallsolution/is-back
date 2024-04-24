@@ -2,7 +2,7 @@ import dotenv from 'dotenv'
 import express from "express";
 import asyncHandler from "express-async-handler";
 
-import service from "../services/general/DataService.js";
+import service from "../services/general/ModuleServices.js";
 
 
 

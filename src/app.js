@@ -9,6 +9,8 @@ import authRoutes from './routes/authRoutes.js';
 import dashboardRoutes from './routes/dashboardRoutes.js';
 import dataDetailRoutes from './routes/dataDetailRoutes.js';
 import dataRoutes from './routes/dataRoutes.js';
+import moduleRoutes from './routes/moduleRoutes.js';
+import moduleClientRoutes from './routes/moduleClientRoutes.js';
 
 
 dotenv.config();
@@ -34,6 +36,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/data', dataRoutes);
 app.use('/api/datadetail', dataDetailRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/module', moduleRoutes);
+app.use('/api/moduleclient', moduleClientRoutes);
 
 
 
