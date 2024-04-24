@@ -13,14 +13,6 @@ const getClient= async(idClient)=>{
 
 }
 
-const getClientByNit= async(nit)=>{ 
-  try{
-    const client = await Client.findOne( { where : {nit:nit}});
-    return { client, status:200 };
-  }catch(err){
-    return { client:null, status:500 , error:err };
-  }  
-}
 
 const getList= async()=>{ 
     try{
@@ -34,9 +26,9 @@ const getList= async()=>{
 
 const insertClient= async(body)=>{
   var id = uuidv4()
-  var cliente = {...body,id}
+  var client = {...body,id}
   try{
-    var res = await Client.create(cliente)
+    var res = await Client.create(client)
     return { message: 'Cliente ingresado', status:200 };
   }catch(err){
     return { message: 'Error en el servidor', status:500 , error:err };
@@ -44,29 +36,15 @@ const insertClient= async(body)=>{
 }
 
 
-
-const updateByNit= async(clientNit,newName,newType)=>{
-  try{
-    var res = await Client.update(
-      { name: newName, type:newType},
-      { where: { nit: clientNit } } 
-    )
-    return { message: 'Cliente actualizado por nit', status:200 };
-  }catch(err){
-    return { message: 'Error en el servidor', status:500, error:err };
-  }  
-}
-
-
-const updateClient= async(idClient,newName,newType)=>{
-  try{
-    var res = await Client.update(
-      { name: newName, type:newType},
-      { where: { id: idClient } } 
+const updateClient= async(client)=>{
+  try{      
+      var res = await Client.update(
+      client,
+      { where: { id: client.id } } 
     )
     return { message: 'Cliente actualizado', status:200 };
   }catch(err){
-    return { message: 'Error en el servidor', status:500, error:err };
+    return { message: 'Error en el servidor upload', status:500, error:err };
   }  
 }
 
@@ -74,9 +52,7 @@ const updateClient= async(idClient,newName,newType)=>{
 
 export default {
     getClient,
-    getClientByNit,
     getList,
-    updateByNit,
     insertClient,
     updateClient
 };

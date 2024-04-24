@@ -8,25 +8,11 @@ import clientServices from "../services/general/ClientServices.js";
 
 
 async function insertClientController(req, res) {
-    if (!req.body.nit) {
+    if (!req.body.identification) {
         throw "Se necesita el nit del cliente";
     }
     const body = req.body
     let dataresult = await clientServices.insertClient(body);
-    return res.status(dataresult.status).json(dataresult);
-}
-
-async function updateClientByNitController(req, res) {
-    if (!req.body.nit) {
-        return res.status(500).json({ message: "se necesita el nit del cliente" });
-    }
-    if (!req.body.type) {
-        return res.status(500).json({ message: "se necesita el tipo del cliente" });
-    }
-    const nit = req.body.nit;
-    const name = req.body.name;
-    const type = req.body.type;
-    let dataresult = await clientServices.updateByNit(nit, name,type);
     return res.status(dataresult.status).json(dataresult);
 }
 
@@ -41,7 +27,7 @@ async function updateClientController(req, res) {
     const id = req.body.id;
     const name = req.body.name;
     const type = req.body.type;
-    let dataresult = await clientServices.updateClient(id, name, type);
+    let dataresult = await clientServices.updateClient(req.body);
     return res.status(dataresult.status).json(dataresult);
 }
 
@@ -75,16 +61,6 @@ async function getClientController(req, res) {
 
 
 
-async function getClientByNitController(req, res) {
-    if (!req.query.nit) {
-        throw "Se necesita el id del cliente";
-    }
-    const nitClient = req.query.nit;
-    let dataresult = await clientServices.getClientByNit(nitClient);
-    return res.status(dataresult.status).json(dataresult.client);
-};
-
-
 
 
 async function deleteClientController(req, res) {
@@ -97,8 +73,6 @@ export default {
     listClientsController,
     insertClientController,
     updateClientController,
-    updateClientByNitController,
     getClientController,
-    getClientByNitController,
     deleteClientController
 }

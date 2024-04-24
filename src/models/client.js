@@ -9,7 +9,7 @@ const Client = sequelize.define('clients', {
     primaryKey: true,
     defaultValue: DataTypes.UUIDV4,
   },
-  nit: {
+  identification: {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
@@ -19,7 +19,15 @@ const Client = sequelize.define('clients', {
     allowNull: false,
   },
   contact: {
-    type: DataTypes.STRING,
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
+  email: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+  },
+  address: {
+    type: DataTypes.STRING(100),
     allowNull: true,
   },
   type: {

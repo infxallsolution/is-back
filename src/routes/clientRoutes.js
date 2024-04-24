@@ -4,10 +4,8 @@ const router = express.Router()
 
 
 router.get('/list',controller.listClientsController)
-router.get('/getclient',controller.getClientController)
-router.get('/getclientbynit',controller.getClientByNitController)
+router.get('/get',controller.getClientController)
 router.post('/insert',controller.insertClientController)
 router.post('/update',controller.updateClientController)
-router.post('/updatebynit',controller.updateClientByNitController)
 router.post('/delete',controller.deleteClientController)
 export default router
