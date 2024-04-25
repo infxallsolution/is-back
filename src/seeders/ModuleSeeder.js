@@ -3,7 +3,8 @@ import Module from '../models/module.js'
 
 async function createModules() {
   try {
-    await Module.truncate();
+    await Module.destroy({
+      where: {}});
     await Module.bulkCreate([
       { id: 1, name: 'Producción', state: 1 },
       { id: 2, name: 'Laboratorio', state: 1 },

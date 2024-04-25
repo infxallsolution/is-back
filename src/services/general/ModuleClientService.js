@@ -15,7 +15,23 @@ const get= async(idFind)=>{
 }
 
 const getModulesByClient= async(id)=>{
-  const model = await ModuleClient.findAll( { where : {clientId:id}});
+
+  ModuleClient.belongsTo(Module, { foreignKey: 'moduleId'})
+  Module.hasMany(ModuleClient, { foreignKey: 'moduleId'})
+
+
+  const model = await ModuleClient.findAll( {
+     where : {clientId:id},
+     include: [
+      {
+          model: Module,
+          attributes: { exclude: ['createdAt', 'updatedAt'] },
+          required: true
+      }
+  ],
+  attributes: { exclude: ['createdAt', 'updatedAt'] }
+    
+    });
   return model
 }
 
@@ -31,30 +47,41 @@ const getList2= async()=>{
 
 const getList= async()=>{ 
 
+  ModuleClient.belongsTo(Client, { foreignKey: 'id'})
+  Client.hasMany(ModuleClient, { foreignKey: 'clientId'})
+
+  
+  ModuleClient.belongsTo(Module, { foreignKey: 'moduleId'})
+  Module.hasMany(ModuleClient, { foreignKey: 'moduleId'})
+
+  
+
+  //ModuleClient.hasMany(Module, { foreignKey: 'modules.id'})
   //Client.hasMany(ModuleClient);
-  ModuleClient.belongsTo(Client);
-  ModuleClient.belongsTo(Module);
+  //ModuleClient.hasMany(Client);
+ // ModuleClient.belongsTo(Client);
+ // ModuleClient.belongsTo(Module);
 
   try{
-    const list = await ModuleClient.findAll({
-      attributes:  { exclude: ['createdAt', 'updatedAt'] },
-      include: [{
-        model: Client,
-        attributes: ['name'],
-        on: {
-          'clienteId': Sequelize.col('Client.id')
-        }
-      },{
-        model: Module,
-        attributes: ['name'], 
-        on: {
-          'moduleId': Sequelize.col('Module.id')
-        }
-      }]
-    });
+    const list = await Client.findAll({
+      include: [
+          {
+              model: ModuleClient,
+              attributes: { exclude: ['createdAt', 'updatedAt'] },
+              required: true,
+              include: [
+                {
+                    model: Module
+                }
+              ]
+          }
+      ],
+      attributes: { exclude: ['createdAt', 'updatedAt'] }
+  });
     
     return { list:list, status:200 };
   }catch(err){
+    console.log(err)
     return { list:null, status:500 , error:err };
   }  
 }
