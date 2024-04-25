@@ -19,6 +19,8 @@ const getClient= async(idClient)=>{
 }
 
 
+
+
 const getList= async()=>{ 
     try{
       const list = await Client.findAll({ attributes: { exclude: ['createdAt', 'updatedAt'] }});
@@ -41,11 +43,11 @@ const insertClient= async(body)=>{
 }
 
 
-const updateClient= async(client)=>{
+const updateClient= async(idFind,client)=>{
   try{      
       var res = await Client.update(
       client,
-      { where: { id: client.id } } 
+      { where: { id: idFind } } 
     )
     return { message: 'Cliente actualizado', status:200 };
   }catch(err){

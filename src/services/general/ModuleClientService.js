@@ -47,21 +47,13 @@ const getList2= async()=>{
 
 const getList= async()=>{ 
 
-  ModuleClient.belongsTo(Client, { foreignKey: 'id'})
+  ModuleClient.belongsTo(Client, { foreignKey: 'clientId'})
   Client.hasMany(ModuleClient, { foreignKey: 'clientId'})
-
   
   ModuleClient.belongsTo(Module, { foreignKey: 'moduleId'})
   Module.hasMany(ModuleClient, { foreignKey: 'moduleId'})
 
   
-
-  //ModuleClient.hasMany(Module, { foreignKey: 'modules.id'})
-  //Client.hasMany(ModuleClient);
-  //ModuleClient.hasMany(Client);
- // ModuleClient.belongsTo(Client);
- // ModuleClient.belongsTo(Module);
-
   try{
     const list = await Client.findAll({
       include: [
@@ -71,12 +63,13 @@ const getList= async()=>{
               required: true,
               include: [
                 {
-                    model: Module
+                    model: Module,
+                    attributes: { exclude: ['createdAt', 'updatedAt'] },
                 }
               ]
           }
       ],
-      attributes: { exclude: ['createdAt', 'updatedAt'] }
+      attributes: ['id', 'name'] 
   });
     
     return { list:list, status:200 };
@@ -100,7 +93,7 @@ const insert= async(body)=>{
 
 const deleteReg = async(body)=>{
   try{
-    await ModuleClient.destroy({
+    await ModuleClient.update({
       where: {
         moduleId: body.moduleId,
         clientId: body.clientId

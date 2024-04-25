@@ -18,37 +18,22 @@ async function insertClientController(req, res) {
 
 
 async function updateClientController(req, res) {
-    if (!req.body.id) {
+    if (!req.query.id) {
         return res.status(500).json({ message: "se necesita el id del cliente" });
     }
-    if (!req.body.type) {
-        return res.status(500).json({ message: "se necesita el tipo del cliente" });
-    }
-    const id = req.body.id;
-    const name = req.body.name;
-    const type = req.body.type;
-    let dataresult = await clientServices.updateClient(req.body);
+    
+    const id = req.query.id;
+    let dataresult = await clientServices.updateClient(id,req.body);
     return res.status(dataresult.status).json(dataresult);
 }
 
 
 
-/**
- * @swagger
- * /api/client/list:
- *   get:
- *     summary: Obtiene todos los clientes
- *     description: Retorna una lista de todos los clientes registrados.
- *     responses:
- *       200:
- *         description: Operación exitosa. Devuelve una lista de clientes.
- *       500:
- *         description: Error interno del servidor.
- */
 async function listClientsController(req, res) {
     let dataresult = await clientServices.getList();
     return res.status(dataresult.status).json(dataresult.list);
 }
+
 
 async function getClientController(req, res) {
     if (!req.query.id) {

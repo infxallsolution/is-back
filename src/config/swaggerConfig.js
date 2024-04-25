@@ -1,5 +1,12 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import path from 'path';
+
+
+const __dirname = path.resolve();
+const ruta = `${path.join(__dirname,'src/routes/*.js')}`
+console.log(__dirname)
+console.log(ruta)
 
 const options = {
   swaggerDefinition: {
@@ -9,7 +16,7 @@ const options = {
       description: 'Documentación de tu API con Swagger',
     },
   },
-  apis: ['../routes/clientRoutes.js'], // Rutas de tus archivos de ruta
+  apis: [ruta], // Rutas de tus archivos de ruta
 };
 
 const specs = swaggerJsdoc(options);
