@@ -7,6 +7,8 @@ const router = express.Router()
 * /api/client/list:
 *   get:
 *     summary: Obtiene todos los clientes
+*     tags:
+*       - Usuarios
 *     description: Retorna una lista de todos los clientes registrados.
 *     responses:
 *       200:
@@ -22,6 +24,8 @@ router.get('/list',controller.listClientsController)
 * /api/client/get:
 *   get:
 *     summary: Obtiene los datos de un cliente
+*     tags:
+*       - Usuarios
 *     description: Retorna los datos de un cliente
 *     parameters:
 *       - in: query
@@ -41,76 +45,80 @@ router.get('/get',controller.getClientController)
 
 
 /**
- * @swagger
- * /api/client/insert:
- *   post:
- *     summary: Crea un nuevo cliente
- *     description: Crea un nuevo cliente con la información proporcionada.
- *     parameters:
- *       - in: body
- *         name: body
- *         description: Datos del nuevo cliente
- *         required: true
- *         schema:
- *           type: object
- *           properties:
- *             name:
- *               type: string
- *             identification:
- *               type: string
- *             contact:
- *               type: string
- *             email:
- *               type: string
- *             address:
- *               type: string
- *             type:
- *               type: string
- *     responses:
- *       201:
- *         description: cliente creado exitosamente.
- *       400:
- *         description: Datos de cliente no válidos.
- */
+* @swagger
+* /api/client/insert:
+*   post:
+*     summary: Crea un nuevo cliente
+*     tags:
+*       - Usuarios
+*     description: Crea un nuevo cliente con la información proporcionada.
+*     parameters:
+*       - in: body
+*         name: body
+*         description: Datos del nuevo cliente
+*         required: true
+*         schema:
+*           type: object
+*           properties:
+*             name:
+*               type: string
+*             identification:
+*               type: string
+*             contact:
+*               type: string
+*             email:
+*               type: string
+*             address:
+*               type: string
+*             type:
+*               type: string
+*     responses:
+*       201:
+*         description: cliente creado exitosamente.
+*       400:
+*         description: Datos de cliente no válidos.
+*/
 router.post('/insert',controller.insertClientController)
 
 /**
- * @swagger
- * /api/client/update:
- *   post:
- *     summary: Actualiza los datos del cliente
- *     description: Actualiza un cliente con información proporcionada.
- *     parameters:
- *       - in: query
- *         name: id
- *         description: ID del cliente
- *         required: true
- *         schema:
- *           type: string
- *       - in: body
- *         name: body
- *         description: Datos del nuevo cliente
- *         required: true
- *         schema:
- *           type: object
- *           properties:
- *             name:
- *               type: string
- *             identification:
- *               type: string
- *             contact:
- *               type: string
- *             email:
- *               type: string
- *             address:
- *               type: string
- *             type:
- *               type: string
- *     responses:
- *       201:
- *         description: cliente actualizado exitosamente.
- *       400:
- *         description: Datos de cliente no válidos.
+* @swagger
+* /api/client/update:
+*   post:
+*     summary: Actualiza los datos del cliente
+*     tags:
+*       - Usuarios
+*     description: Actualiza un cliente con información proporcionada.
+*     parameters:
+*       - in: query
+*         name: id
+*         description: ID del cliente
+*         required: true
+*         schema:
+*           type: string
+*       - in: body
+*         name: body
+*         description: Datos del nuevo cliente
+*         required: true
+*         schema:
+*           type: object
+*           properties:
+*             name:
+*               type: string
+*             identification:
+*               type: string
+*             contact:
+*               type: string
+*             email:
+*               type: string
+*             address:
+*               type: string
+*             type:
+*               type: string
+*     responses:
+*       201:
+*         description: cliente actualizado exitosamente.
+*       400:
+*         description: Datos de cliente no válidos.
  */
 router.post('/update',controller.updateClientController)
 router.post('/delete',controller.deleteClientController)
