@@ -1,5 +1,6 @@
 import express from 'express'
 import controller from '../controllers/clientController.js'
+import verifyToken from '../middleware/authMiddleware.js';
 const router = express.Router()
 
 /**
@@ -120,6 +121,6 @@ router.post('/insert',controller.insertClientController)
 *       400:
 *         description: Datos de cliente no válidos.
  */
-router.post('/update',controller.updateClientController)
+router.post('/update',verifyToken,controller.updateClientController)
 router.post('/delete',controller.deleteClientController)
 export default router

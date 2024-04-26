@@ -6,21 +6,25 @@ import { v4 as uuidv4} from 'uuid';
 import dotenv from 'dotenv'
 
 const login= async(username,password)=>{
+  const JWT_SECRET = process.env.JWT_SECRET
   try {
-    // Buscar al usuario en la base de datos
     const user = await User.findOne({ where: { username } });
     if (!user) {
       return { message: 'Usuario no encontrado', status:404 };
     }
-    // Verificar la contraseña
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
       console.error('Contraseña incorrecta');
       return { message: 'Contraseña incorrecta', status:401 };
     }
-    // Generar token de autenticación
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    // Enviar token como respuesta
+    const token = jwt.sign(
+        {
+            id:user.id
+        },
+        JWT_SECRET,
+        {
+            expiresIn:"2h"
+        });
     return { token, status:200 };
   } catch (error) {
     console.error('Error en el login:', error);
