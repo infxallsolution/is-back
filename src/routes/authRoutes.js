@@ -22,6 +22,8 @@ const router = express.Router();
 *                 type: string
 *               password:
 *                 type: string
+*               clientId:
+*                 type: string
 *     responses:
 *       200:
 *         description: Operación exitosa. Devuelve un token.
@@ -47,6 +49,8 @@ router.post('/login', loginController);
 *               username:
 *                 type: string
 *               password:
+*                 type: string
+*               clientId:
 *                 type: string
 *     responses:
 *       200:
