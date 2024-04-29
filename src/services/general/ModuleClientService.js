@@ -94,7 +94,7 @@ const insert= async(body)=>{
     }
     else{
       console.log("ido del modulo:"+model.id)
-      var res = await ModuleClient.update(
+      await ModuleClient.update(
         {state:true},
         { where: { id: model.id } }
       ) 
@@ -108,12 +108,13 @@ const insert= async(body)=>{
 
 const deleteReg = async(body)=>{
   try{
-    await ModuleClient.update({
-      where: {
+    await ModuleClient.update(
+      {state:false},
+      {where: {
         moduleId: body.moduleId,
         clientId: body.clientId
-      },
-    });
+      } }
+    ) 
     return { message: 'Modulo desasignado', status:200 };
   }catch(err){
     return { message: 'Error en el servidor', status:500 , error:err };

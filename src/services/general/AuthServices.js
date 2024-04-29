@@ -5,10 +5,10 @@ import User from '../../models/user.js'
 import { v4 as uuidv4} from 'uuid';
 import dotenv from 'dotenv'
 
-const login= async(username,password)=>{
+const login= async(username,password,clientId)=>{
   const JWT_SECRET = process.env.JWT_SECRET
   try {
-    const user = await User.findOne({ where: { username } });
+    const user = await User.findOne({ where: { username,clientId } });
     if (!user) {
       return { message: 'Usuario no encontrado', status:404 };
     }
@@ -33,11 +33,11 @@ const login= async(username,password)=>{
 }
 
 
-const insertUser= async(username,passwordPlain)=>{
+const insertUser= async(username,passwordPlain,clientId)=>{
   var id = uuidv4()
   const password = await bcrypt.hash(passwordPlain,7)
   try{
-    var res = await User.create({id,username,password})
+    var res = await User.create({id,username,password,clientId})
     return { message: 'Usuario creado', status:200 };
   }catch(err){
     return { message: 'Error en el servidor'+err, status:500 };

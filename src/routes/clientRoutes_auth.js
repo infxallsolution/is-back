@@ -25,6 +25,8 @@ router.get('/list',controller.listClientsController)
 * /api/client/get:
 *   get:
 *     summary: Obtiene los datos de un cliente
+*     security:
+*       - bearerAuth: []
 *     tags:
 *       - Clientes
 *     description: Retorna los datos de un cliente
@@ -41,7 +43,7 @@ router.get('/list',controller.listClientsController)
 *       500:
 *         description: Error interno del servidor.
 */
-router.get('/get',controller.getClientController)
+router.get('/get',verifyToken,controller.getClientController)
 
 
 
@@ -50,6 +52,8 @@ router.get('/get',controller.getClientController)
 * /api/client/insert:
 *   post:
 *     summary: Crea un nuevo cliente
+*     security:
+*       - bearerAuth: []
 *     tags:
 *       - Clientes
 *     description: Crea un nuevo cliente con la información proporcionada.
@@ -77,13 +81,15 @@ router.get('/get',controller.getClientController)
 *       400:
 *         description: Datos de cliente no válidos.
 */
-router.post('/insert',controller.insertClientController)
+router.post('/insert',verifyToken,controller.insertClientController)
 
 /**
 * @swagger
 * /api/client/update:
 *   post:
 *     summary: Actualiza los datos del cliente
+*     security:
+*       - bearerAuth: []
 *     tags:
 *       - Clientes
 *     description: Actualiza un cliente con información proporcionada.
@@ -119,6 +125,6 @@ router.post('/insert',controller.insertClientController)
 *       400:
 *         description: Datos de cliente no válidos.
  */
-router.post('/update',controller.updateClientController)
+router.post('/update',verifyToken,controller.updateClientController)
 router.post('/delete',controller.deleteClientController)
 export default router

@@ -9,16 +9,29 @@ const User = sequelize.define('users', {
     primaryKey: true,
     defaultValue: DataTypes.UUIDV4,
   },
+  clientId: {
+    type: DataTypes.UUID,
+    allowNull: false
+  },
   username: {
     type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
+    allowNull: false
   },
   password: {
     type: DataTypes.STRING,
     allowNull: false
   }
-}, {
+}
+, 
+{
+  indexes: [
+    {
+      unique: true,
+      fields: ['username', 'clientId'] // Restricción única compuesta
+    }
+  ]
+}
+, {
   tableName: 'users'
 });
 
