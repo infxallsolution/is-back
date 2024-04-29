@@ -19,8 +19,7 @@ async function insertClientController(req, res) {
 async function updateClientController(req, res) {
     if (!req.query.id) {
         return res.status(500).json({ message: "se necesita el id del cliente" });
-    }
-    
+    }    
     const id = req.query.id;
     let dataresult = await clientServices.updateClient(id,req.body);
     return res.status(dataresult.status).json(dataresult);

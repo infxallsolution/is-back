@@ -27,6 +27,13 @@ router.get('/list',controller.listController)
 *     tags:
 *       - Module
 *     description: Retorna un modulo.
+*     parameters:
+*       - in: query
+*         name: id
+*         description: ID del modulo
+*         required: true
+*         schema:
+*           type: string
 *     responses:
 *       200:
 *         description: Operación exitosa. Devuelve un modulo.

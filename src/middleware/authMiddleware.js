@@ -2,8 +2,7 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv'
 
 const verifyToken = (req, res, next) => {
-    const JWT_SECRET = process.env.JWT_SECRET
-   // console.log(req)
+  const JWT_SECRET = process.env.JWT_SECRET
   const auth = req.headers.authorization;
 
   if (!auth) {
