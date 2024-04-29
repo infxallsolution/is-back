@@ -87,6 +87,24 @@ router.post('/insert',controller.insertClientController)
 *     tags:
 *       - Clientes
 *     description: Actualiza un cliente con información proporcionada.
+*     requestBody:
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             properties:
+*               name:
+*                 type: string
+*               identification:
+*                 type: string
+*               contact:
+*                 type: string
+*               email:
+*                 type: string
+*               address:
+*                 type: string
+*               type:
+*                 type: string
 *     parameters:
 *       - in: query
 *         name: id
@@ -94,25 +112,6 @@ router.post('/insert',controller.insertClientController)
 *         required: true
 *         schema:
 *           type: string
-*       - in: body
-*         name: body
-*         description: Datos del nuevo cliente
-*         required: true
-*         schema:
-*           type: object
-*           properties:
-*             name:
-*               type: string
-*             identification:
-*               type: string
-*             contact:
-*               type: string
-*             email:
-*               type: string
-*             address:
-*               type: string
-*             type:
-*               type: string
 *     responses:
 *       201:
 *         description: cliente actualizado exitosamente.
