@@ -49,7 +49,7 @@ async function obtenerUsuarios() {
     console.log('Usuarios obtenidos:', usuarios);
     return usuarios;
   } catch (error) {
-    console.error('Error al obtener usuarios:', error);
+    console.error('Error al consultar usuarios:', error);
     return null
   }
 }
