@@ -22,7 +22,7 @@ const router = express.Router();
 *                 type: string
 *               password:
 *                 type: string
-*               clientId:
+*               identification:
 *                 type: string
 *     responses:
 *       200:
@@ -50,7 +50,7 @@ router.post('/login', loginController);
 *                 type: string
 *               password:
 *                 type: string
-*               clientId:
+*               identification:
 *                 type: string
 *     responses:
 *       200:

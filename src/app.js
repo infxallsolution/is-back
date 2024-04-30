@@ -5,6 +5,11 @@ import conectDb from './config/db.js'
 import swaggerConfig  from './config/swaggerConfig.js';
 import routes from './routes/indexRoutes.js'
 import ModuleSeeder from './seeders/ModuleSeeder.js';
+
+///ejecuto los jobs ///
+//import './services/jobs/synchronizeUsers.js'
+
+
 dotenv.config();
 
 const port = process.env.PORT || 7000; 

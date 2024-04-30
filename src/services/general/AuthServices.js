@@ -2,13 +2,16 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../../models/user.js'
+import Client from '../../models/client.js'
 import { v4 as uuidv4} from 'uuid';
 import dotenv from 'dotenv'
 
-const login= async(username,password,clientId)=>{
+const login= async(username,password,identification)=>{
   const JWT_SECRET = process.env.JWT_SECRET
-  try {
-    const user = await User.findOne({ where: { username,clientId } });
+  try {    
+    const client = await Client.findOne({ where: { identification } });
+
+    const user = await User.findOne({ where: { username,clientId:client.id } });
     if (!user) {
       return { message: 'Usuario no encontrado', status:404 };
     }
@@ -33,11 +36,12 @@ const login= async(username,password,clientId)=>{
 }
 
 
-const insertUser= async(username,passwordPlain,clientId)=>{
+const insertUser= async(username,passwordPlain,identification)=>{
   var id = uuidv4()
   const password = await bcrypt.hash(passwordPlain,7)
   try{
-    var res = await User.create({id,username,password,clientId})
+    const client = await Client.findOne({ where: { identification } });
+    var res = await User.create({id,username,password,clientId:client.id})
     return { message: 'Usuario creado', status:200 };
   }catch(err){
     return { message: 'Error en el servidor'+err, status:500 };
