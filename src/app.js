@@ -6,7 +6,7 @@ import swaggerConfig  from './config/swaggerConfig.js';
 import routes from './routes/indexRoutes.js'
 import ModuleSeeder from './seeders/ModuleSeeder.js';
 
-///ejecuto los jobs ///
+///ejecuto los jobs nuevo ///
 //import './services/jobs/synchronizeUsers.js'
 
 

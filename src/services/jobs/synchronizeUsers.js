@@ -6,20 +6,24 @@ import bcrypt from 'bcrypt';
 import { v4 as uuidv4} from 'uuid';
 
 ///se ejecuta cada 30 minutos///
-cron.schedule('*/30 * * * *', async () => {
+//cron.schedule('*/10 * * * *', async () => {
+cron.schedule('* * * * *', async () => {
   console.log('Traigo los usuarios del servicio Net 8');
   const usuarios = await obtenerUsuarios();  
   try {
     const saltRounds = 7;
     for (const usuario of usuarios) {
-      let username = usuario.username;
-      let passwordPlain = usuario.clave;
+      let username = usuario.usuario;
+      let name = usuario.descripcion;
+      let passwordPlain = usuario.passwordDecode;
+      let state = usuario.activo;
+      let email = usuario.email;
       var id = uuidv4() 
       const hashedPassword = await bcrypt.hash(passwordPlain, saltRounds);
       const model = await User.findOne( { where : {username}});
       if(model==null){
         let clientId= "23fd6d18-927a-470e-8d71-f2959a174d1"
-        await User.create({id,username,password:hashedPassword,clientId})
+        await User.create({id,clientId,username,name,password:hashedPassword,state,email})
         console.log("usuario creado")
       }
       else{
@@ -44,9 +48,9 @@ cron.schedule('*/30 * * * *', async () => {
 
 async function obtenerUsuarios() {
   try {    
-    const response = await axios.get(process.env.URL_USERS);
+    const response = await axios.get(process.env.URL_USERS, { timeout: 9000 });
     const usuarios = response.data;
-    console.log('Usuarios obtenidos:', usuarios);
+   // console.log('Usuarios obtenidos:', usuarios);
     return usuarios;
   } catch (error) {
     console.error('Error al consultar usuarios:', error);
