@@ -33,5 +33,5 @@ swaggerConfig(app);
 app.use(routes)
 
 app.get('/', (req, res) => {
-    res.send("API is running...");
+    res.send("API is running new...");
 })
