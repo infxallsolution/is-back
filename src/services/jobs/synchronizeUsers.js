@@ -7,7 +7,7 @@ import { v4 as uuidv4} from 'uuid';
 
 ///se ejecuta cada 30 minutos///
 //cron.schedule('*/10 * * * *', async () => {
-cron.schedule('* * * * *', async () => {
+cron.schedule('*/15 * * * *', async () => {
   console.log('Traigo los usuarios del servicio Net 8');
   const usuarios = await obtenerUsuarios();  
   try {
@@ -22,7 +22,8 @@ cron.schedule('* * * * *', async () => {
       const hashedPassword = await bcrypt.hash(passwordPlain, saltRounds);
       const model = await User.findOne( { where : {username}});
       if(model==null){
-        let clientId= "23fd6d18-927a-470e-8d71-f2959a174d1"
+        //const clientId= process.env.ID_CLIENT 
+        const clientId= "23fd6d18-927a-470e-8d71-f2959a174d1"
         await User.create({id,clientId,username,name,password:hashedPassword,state,email})
         console.log("usuario creado")
       }
@@ -47,8 +48,10 @@ cron.schedule('* * * * *', async () => {
 
 
 async function obtenerUsuarios() {
-  try {    
-    const response = await axios.get(process.env.URL_USERS, { timeout: 9000 });
+  try {   
+    //const url = process.env.URL_USERS 
+    const url = "http://172.30.20.143:5076/get-users"
+    const response = await axios.get(url, { timeout: 9000 });
     const usuarios = response.data;
    // console.log('Usuarios obtenidos:', usuarios);
     return usuarios;

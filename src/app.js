@@ -7,7 +7,7 @@ import routes from './routes/indexRoutes.js'
 import ModuleSeeder from './seeders/ModuleSeeder.js';
 
 ///ejecuto los jobs nuevo ///
-//import './services/jobs/synchronizeUsers.js'
+import './services/jobs/synchronizeUsers.js'
 
 
 dotenv.config();
