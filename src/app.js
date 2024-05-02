@@ -24,7 +24,8 @@ app.use(express.json({limit: '50mb'}));
 app.use(cors())
 conectDb()
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`)
+    //cambio el message running
+    console.log(`Server is running on port::: ${port}`)
 })
 
 ModuleSeeder.createModules()
