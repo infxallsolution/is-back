@@ -1,7 +1,6 @@
 // routes/authRoutes.js
 import express from 'express';
-//comentario
-import { loginController, insertUserController } from '../controllers/authController.js';
+import controller from '../controllers/authController.js'
 const router = express.Router();
 
 
@@ -31,7 +30,7 @@ const router = express.Router();
 *       500:
 *         description: Error interno del servidor.
 */
-router.post('/login', loginController);
+router.post('/login', controller.loginController);
 
 /**
 * @swagger
@@ -49,16 +48,22 @@ router.post('/login', loginController);
 *             properties:
 *               username:
 *                 type: string
+*               name:
+*                 type: string
 *               password:
 *                 type: string
 *               identification:
 *                 type: string
+*               email:
+*                 type: string
+*               state:
+*                 type: boolean
 *     responses:
 *       200:
 *         description: Operación exitosa. usuario creado.
 *       500:
 *         description: Error interno del servidor.
 */
-router.post('/insert', insertUserController);
+router.post('/insert', controller.insertUserController);
 
 export default router;

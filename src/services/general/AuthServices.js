@@ -6,9 +6,12 @@ import Client from '../../models/client.js'
 import { v4 as uuidv4} from 'uuid';
 import dotenv from 'dotenv'
 
-const login= async(username,password,identification)=>{
+const login= async(body)=>{
   const JWT_SECRET = process.env.JWT_SECRET
-  try {    
+  try { 
+    const identification = body.identification;   
+    const username = body.username;   
+    const password = body.password;   
     const client = await Client.findOne({ where: { identification } });
 
     const user = await User.findOne({ where: { username,clientId:client.id } });
@@ -36,12 +39,24 @@ const login= async(username,password,identification)=>{
 }
 
 
-const insertUser= async(username,passwordPlain,identification)=>{
+const insertUser= async(body)=>{
+  console.log("antes")
+  console.log("body:",body)
+  console.log("despues")
   var id = uuidv4()
-  const password = await bcrypt.hash(passwordPlain,7)
+  const passwordHash = await bcrypt.hash(body.password,7)
+  const identification = body.identification
+  console.log(passwordHash)
   try{
     const client = await Client.findOne({ where: { identification } });
-    var res = await User.create({id,username,password,clientId:client.id})
+    if(client==null){
+      return { message: 'El nit no existe', status:500 };
+    }
+    const clientId = client.id
+    body.password= passwordHash
+    var usuario = {...body,id,clientId}
+    console.log("usuario",usuario)
+    var res = await User.create(usuario)
     return { message: 'Usuario creado', status:200 };
   }catch(err){
     return { message: 'Error en el servidor'+err, status:500 };
