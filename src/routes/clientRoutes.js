@@ -127,5 +127,39 @@ router.post('/insert',controller.insertClientController)
 *         description: Datos de cliente no válidos.
  */
 router.post('/update/:id',controller.updateClientController)
+
+
+/**
+* @swagger
+* /api/client/updatestate/{id}:
+*   post:
+*     summary: Actualiza los datos del cliente
+*     tags:
+*       - Clientes
+*     description: Actualiza un cliente con información proporcionada.
+*     requestBody:
+*       content:
+*         application/json:
+*           schema:
+*             type: object
+*             properties:
+*               state:
+*                 type: boolean
+*     parameters:
+*       - in: path
+*         name: id
+*         description: ID del cliente
+*         required: true
+*         schema:
+*           type: string
+*     responses:
+*       201:
+*         description: cliente actualizado exitosamente.
+*       400:
+*         description: Datos de cliente no válidos.
+ */
+router.post('/updatestate/:id',controller.updateStateClientController)
+
+
 router.post('/delete',controller.deleteClientController)
 export default router
