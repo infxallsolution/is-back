@@ -25,10 +25,10 @@ async function listController(req,res){
 
 
 const getController = asyncHandler(async (req, res) => {
-    if (!req.query.id) {
+    if (!req.params.id) {
         throw "Se necesita el id del detail";
       }
-    const idFind = req.query.id;
+    const idFind = req.params.id;
     let dataresult = await service.get(idFind);    
     return res.status(200).json(dataresult);    
 });

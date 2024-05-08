@@ -37,6 +37,10 @@ const Client = sequelize.define('clients', {
       isIn: [['PALMA', 'EXTRACTURA', 'BANANO']]
     }
   },
+  state: {
+    type: Boolean,
+    allowNull: true,
+  }  
 }, {
   tableName: 'clients'
 });
