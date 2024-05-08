@@ -22,14 +22,14 @@ router.get('/list',controller.listClientsController)
 
 /**
 * @swagger
-* /api/client/get:
+* /api/client/get/{id}:
 *   get:
 *     summary: Obtiene los datos de un cliente
 *     tags:
 *       - Clientes
 *     description: Retorna los datos de un cliente
 *     parameters:
-*       - in: query
+*       - in: path
 *         name: id
 *         description: ID del cliente a buscar
 *         required: true
@@ -41,7 +41,7 @@ router.get('/list',controller.listClientsController)
 *       500:
 *         description: Error interno del servidor.
 */
-router.get('/get',controller.getClientController)
+router.get('/get/:id',controller.getClientController)
 
 
 
@@ -81,7 +81,7 @@ router.post('/insert',controller.insertClientController)
 
 /**
 * @swagger
-* /api/client/update:
+* /api/client/update/{id}:
 *   post:
 *     summary: Actualiza los datos del cliente
 *     tags:
@@ -106,7 +106,7 @@ router.post('/insert',controller.insertClientController)
 *               type:
 *                 type: string
 *     parameters:
-*       - in: query
+*       - in: path
 *         name: id
 *         description: ID del cliente
 *         required: true
@@ -118,6 +118,6 @@ router.post('/insert',controller.insertClientController)
 *       400:
 *         description: Datos de cliente no válidos.
  */
-router.post('/update',controller.updateClientController)
+router.post('/update/:id',controller.updateClientController)
 router.post('/delete',controller.deleteClientController)
 export default router
