@@ -38,7 +38,7 @@ const Client = sequelize.define('clients', {
     }
   },
   state: {
-    type: Boolean,
+    type: DataTypes.BOOLEAN,
     allowNull: false,
   } ,
   company: {
