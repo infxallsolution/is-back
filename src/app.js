@@ -8,6 +8,7 @@ import ModuleSeeder from './seeders/ModuleSeeder.js';
 
 ///ejecuto los jobs nuevo ///
 //import './services/jobs/synchronizeUsers.js'
+//import './services/jobs/recivedPeriodByProduct.js'
 
 
 dotenv.config();

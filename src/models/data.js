@@ -18,6 +18,10 @@ const Data = sequelize.define('data', {
   clientId: {
     type: DataTypes.UUID,
     allowNull: false
+  },
+  type: {
+    type: DataTypes.UUID,
+    allowNull: true
   }
 }, {
   tableName: 'data'

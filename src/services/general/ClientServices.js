@@ -53,9 +53,8 @@ const insertClient= async(body)=>{
 
 
 const updateClient= async(idFind,client)=>{
-  try{   
-    
-    const model = await Client.findOne( { where : {identification}});
+  try{  
+    const model = await Client.findOne( { where : {id:idFind}});
     if(model==null){
       return { message: 'No existe un cliente con identification: '+identification, status:400 };
     }
@@ -67,7 +66,7 @@ const updateClient= async(idFind,client)=>{
 
       
   }catch(err){
-    return { message: 'Error en el servidor upload', status:500, error:err };
+    return { message: 'Error en el servidor al realizar el update', status:500, error:err };
   }  
 }
 

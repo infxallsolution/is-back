@@ -73,6 +73,8 @@ router.get('/get/:id',controller.getClientController)
 *                 type: string
 *               state:
 *                 type: boolean
+*               company:
+*                 type: integer
 *     responses:
 *       201:
 *         description: cliente creado exitosamente.
@@ -109,6 +111,8 @@ router.post('/insert',controller.insertClientController)
 *                 type: string
 *               state:
 *                 type: boolean
+*               company:
+*                 type: integer
 *     parameters:
 *       - in: path
 *         name: id
