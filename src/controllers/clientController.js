@@ -27,6 +27,23 @@ async function updateClientController(req, res) {
 
 
 
+async function updateStateClientController(req, res) {
+    if (!req.params.id) {
+        return res.status(500).json({ message: "se necesita el id del cliente" });
+    }  
+
+    console.log(req)
+    if (!('state' in req.body)) {
+        return res.status(500).json({ message: "se necesita el state del cliente" });
+    }    
+    const id = req.params.id;
+    const state = req.body.state;
+    let dataresult = await clientServices.updateStateClient(id,state);
+    return res.status(dataresult.status).json(dataresult);
+}
+
+
+
 async function listClientsController(req, res) {
     let dataresult = await clientServices.getList();
     return res.status(dataresult.status).json(dataresult.list);
@@ -57,5 +74,6 @@ export default {
     insertClientController,
     updateClientController,
     getClientController,
-    deleteClientController
+    deleteClientController,
+    updateStateClientController
 }
