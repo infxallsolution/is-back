@@ -17,10 +17,10 @@ async function insertClientController(req, res) {
 
 
 async function updateClientController(req, res) {
-    if (!req.query.id) {
+    if (!req.params.id) {
         return res.status(500).json({ message: "se necesita el id del cliente" });
     }    
-    const id = req.query.id;
+    const id = req.params.id;
     let dataresult = await clientServices.updateClient(id,req.body);
     return res.status(dataresult.status).json(dataresult);
 }
@@ -34,10 +34,10 @@ async function listClientsController(req, res) {
 
 
 async function getClientController(req, res) {
-    if (!req.query.id) {
+    if (!req.params.id) {
         throw "Se necesita el id del cliente";
     }
-    const idClient = req.query.id;
+    const idClient = req.params.id;
     let dataresult = await clientServices.getClient(idClient);
     return res.status(dataresult.status).json(dataresult.client);
 };
