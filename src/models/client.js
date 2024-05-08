@@ -31,8 +31,11 @@ const Client = sequelize.define('clients', {
     allowNull: true,
   },
   type: {
-    type: DataTypes.STRING(20),
+    type: DataTypes.STRING(20) ,
     allowNull: false,
+    validate: {
+      isIn: [['PALMA', 'EXTRACTURA', 'BANANO']]
+    }
   },
 }, {
   tableName: 'clients'

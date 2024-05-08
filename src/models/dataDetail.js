@@ -17,7 +17,7 @@ const DataDetails = sequelize.define('dataDetails', {
     allowNull: false
   },
   xValue: {
-    type: DataTypes.DATEONLY,
+    type: DataTypes.STRING(15),
     allowNull: false
   },
   yValue: {
