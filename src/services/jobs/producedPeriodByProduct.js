@@ -9,16 +9,16 @@ import { v4 as uuidv4} from 'uuid';
 ///se ejecuta cada 30 minutos///
 //cron.schedule('*/30 * * * *', async () => {
 cron.schedule('* * * * *', async () => {
-  const productsEnum = "FRU"
+  const productsEnum = "CPO"
   const clientId= "23fd6d18-927a-470e-8d71-f2959a174d1"
-  const dataId ="932341bc-99ed-4209-a092-9e111dcca98c"
+  const dataId ="c4ebd95d-66c5-4625-bb8d-d2fb01521f41"
   const model = await Client.findOne( { where : {id:clientId}}); 
   const modelData = await Data.findOne( { where : {id:dataId}});
   const company = model.company
 
 
   console.log('Traigo la data del servicio Net del cliente:',company);
-  const datadetails = await getRecivedPeriodByProduct(company);  
+  const datadetails = await getProductionPeriodByProduct(company);  
   try {
     for (const item of datadetails) {
       let xValue = item.x
@@ -47,9 +47,9 @@ cron.schedule('* * * * *', async () => {
 });
 
 
-async function getRecivedPeriodByProduct(company) {
+async function getProductionPeriodByProduct(company) {
   try {   
-    const url = "http://172.30.20.143:5076/get-recived-period-by-product?productsEnum=FRU&company="+company
+    const url = "http://172.30.20.143:5076/get-production-period-by-product?productsEnum=CPO&company="+company
     const response = await axios.get(url, { timeout: 9000 });
     const datadetails = response.data;
     console.log('datadetails obtenidos:', datadetails);
