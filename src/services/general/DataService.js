@@ -19,6 +19,18 @@ const getList= async()=>{
   }  
 }
 
+const getListByClient= async(clientId)=>{ 
+  try{
+    const list = await Data.findAll({ 
+      where : {clientId},
+      attributes: { exclude: ['createdAt', 'updatedAt'] }
+    });
+    return { list:list, status:200 };
+  }catch(err){
+    return { list:null, status:500 , error:err };
+  }  
+}
+
 
 const insert= async(body)=>{
   var id = uuidv4()
@@ -36,5 +48,6 @@ const insert= async(body)=>{
 export default {
     get,
     getList,
+    getListByClient,
     insert
 };

@@ -19,9 +19,9 @@ const Data = sequelize.define('data', {
     type: DataTypes.UUID,
     allowNull: false
   },
-  type: {
-    type: DataTypes.UUID,
-    allowNull: true
+  endpoint: {
+    type: DataTypes.STRING(150),
+    allowNull: true,
   }
 }, {
   tableName: 'data'

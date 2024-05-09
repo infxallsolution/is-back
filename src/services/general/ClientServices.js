@@ -70,15 +70,31 @@ const updateClient= async(idFind,client)=>{
 
 
 
-const updateStateClient= async(idFind,state)=>{
+const enableClient= async(idFind)=>{
   try{  
     const model = await Client.findOne( { where : {id:idFind}});
     if(model==null){
       return { message: 'No existe un cliente con id: '+idFind, status:400 };
     }
     else{
-      await Client.update({state},{ where: { id: idFind } }     )
-      return { message: 'Estado actualizado', status:200 };
+      await Client.update({state:true},{ where: { id: idFind } }     )
+      return { message: 'Cliente activado', status:200 };
+    }  
+  }catch(err){
+    return { message: 'Error en el servidor al realizar el cambio de estado', status:500, error:err };
+  }  
+}
+
+
+const disableClient= async(idFind)=>{
+  try{  
+    const model = await Client.findOne( { where : {id:idFind}});
+    if(model==null){
+      return { message: 'No existe un cliente con id: '+idFind, status:400 };
+    }
+    else{
+      await Client.update({state:false},{ where: { id: idFind } }     )
+      return { message: 'Cliente desactivado', status:200 };
     }  
   }catch(err){
     return { message: 'Error en el servidor al realizar el cambio de estado', status:500, error:err };
@@ -92,5 +108,6 @@ export default {
     getList,
     insertClient,
     updateClient,
-    updateStateClient
+    enableClient,
+    disableClient
 };
