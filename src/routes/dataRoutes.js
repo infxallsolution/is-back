@@ -7,7 +7,7 @@ const router = express.Router()
 * @swagger
 * /api/data/list:
 *   get:
-*     summary: Obtiene todos los data
+*     summary: Obtiene el listado de datas que alimentan el dashboard
 *     tags:
 *       - Data
 *     description: Retorna una lista de todos los data registrados.
@@ -20,13 +20,38 @@ const router = express.Router()
 router.get('/list',controller.listController)
 
 
+/**
+* @swagger
+* /api/data/listbyclient/{id}:
+*   get:
+*     summary: Obtiene el listado de datas que alimentan el dashboard - por cliente
+*     tags:
+*       - Data
+*     description: Retorna lista de data por cliente
+*     parameters:
+*       - in: path
+*         name: id
+*         description: ID del cliente
+*         required: true
+*         schema:
+*           type: string
+*     responses:
+*       200:
+*         description: Operación exitosa. Devuelve los datos de un data
+*       500:
+*         description: Error interno del servidor.
+*/
+router.get('/listbyclient/:id',controller.listByClientController)
+
+
+
 
 
 /**
 * @swagger
 * /api/data/get/{id}:
 *   get:
-*     summary: Obtiene los datos de un data
+*     summary: Obtiene la informacion de una data especifica
 *     tags:
 *       - Data
 *     description: Retorna los datos de un data

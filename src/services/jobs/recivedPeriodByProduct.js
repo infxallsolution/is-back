@@ -2,6 +2,7 @@ import cron from 'node-cron';
 import axios from 'axios';
 import dotenv from 'dotenv'
 import Client from '../../models/client.js'
+import Data from '../../models/data.js'
 import DataDetail from '../../models/dataDetail.js'
 import { v4 as uuidv4} from 'uuid';
 
@@ -11,7 +12,8 @@ cron.schedule('* * * * *', async () => {
   const productsEnum = "FRU"
   const clientId= "23fd6d18-927a-470e-8d71-f2959a174d1"
   const dataId ="932341bc-99ed-4209-a092-9e111dcca98c"
-  const model = await Client.findOne( { where : {id:clientId, dataId}});
+  const model = await Client.findOne( { where : {id:clientId, dataId}}); 
+  const modelData = await Data.findOne( { where : {id:dataId, clientId}});
   const company = model.company
 
 

@@ -86,7 +86,7 @@ router.post('/insert',controller.insertClientController)
 /**
 * @swagger
 * /api/client/update/{id}:
-*   post:
+*   put:
 *     summary: Actualiza los datos del cliente
 *     tags:
 *       - Clientes
@@ -126,25 +126,17 @@ router.post('/insert',controller.insertClientController)
 *       400:
 *         description: Datos de cliente no válidos.
  */
-router.post('/update/:id',controller.updateClientController)
+router.put('/update/:id',controller.updateClientController)
 
 
 /**
 * @swagger
-* /api/client/updatestate/{id}:
-*   post:
-*     summary: Actualiza los datos del cliente
+* /api/client/enableclient/{id}:
+*   put:
+*     summary: Activa el cliente
 *     tags:
 *       - Clientes
-*     description: Actualiza un cliente con información proporcionada.
-*     requestBody:
-*       content:
-*         application/json:
-*           schema:
-*             type: object
-*             properties:
-*               state:
-*                 type: boolean
+*     description: Activa el cliente
 *     parameters:
 *       - in: path
 *         name: id
@@ -154,11 +146,37 @@ router.post('/update/:id',controller.updateClientController)
 *           type: string
 *     responses:
 *       201:
-*         description: cliente actualizado exitosamente.
+*         description: cliente activado.
 *       400:
 *         description: Datos de cliente no válidos.
  */
-router.post('/updatestate/:id',controller.updateStateClientController)
+router.put('/enableclient/:id',controller.enableClientController)
+
+
+
+
+/**
+* @swagger
+* /api/client/disableclient/{id}:
+*   put:
+*     summary: Desactiva el cliente
+*     tags:
+*       - Clientes
+*     description: Desactiva el cliente
+*     parameters:
+*       - in: path
+*         name: id
+*         description: ID del cliente
+*         required: true
+*         schema:
+*           type: string
+*     responses:
+*       201:
+*         description: cliente desactivado.
+*       400:
+*         description: Datos de cliente no válidos.
+ */
+router.put('/disableclient/:id',controller.disableClientController)
 
 
 router.post('/delete',controller.deleteClientController)

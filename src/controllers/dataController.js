@@ -22,6 +22,14 @@ async function listController(req,res){
     return res.status(dataresult.status).json(dataresult.list);   
 }
 
+async function listByClientController(req,res){ 
+    if (!req.params.id) {
+        throw "Se necesita el id del cliente";
+    }
+    let dataresult = await service.getListByClient(req.params.id);    
+    return res.status(dataresult.status).json(dataresult.list);   
+}
+
 
 
 const getController = asyncHandler(async (req, res) => {
@@ -45,5 +53,6 @@ export default {
     listController,
     insertController, 
     getController,
-    deleteController
+    deleteController,
+    listByClientController
 }
