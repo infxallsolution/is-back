@@ -8,6 +8,8 @@ const router = express.Router()
 * /api/client/list:
 *   get:
 *     summary: Obtiene todos los clientes
+*     security:
+*       - bearerAuth: []
 *     tags:
 *       - Clientes
 *     description: Retorna una lista de todos los clientes registrados.
@@ -17,7 +19,7 @@ const router = express.Router()
 *       500:
 *         description: Error interno del servidor.
 */
-router.get('/list',controller.listClientsController)
+router.get('/list',verifyToken,controller.listClientsController)
 
 
 /**
@@ -25,6 +27,8 @@ router.get('/list',controller.listClientsController)
 * /api/client/get/{id}:
 *   get:
 *     summary: Obtiene los datos de un cliente
+*     security:
+*       - bearerAuth: []
 *     tags:
 *       - Clientes
 *     description: Retorna los datos de un cliente
@@ -41,7 +45,7 @@ router.get('/list',controller.listClientsController)
 *       500:
 *         description: Error interno del servidor.
 */
-router.get('/get/:id',controller.getClientController)
+router.get('/get/:id',verifyToken,controller.getClientController)
 
 
 
@@ -50,6 +54,8 @@ router.get('/get/:id',controller.getClientController)
 * /api/client/insert:
 *   post:
 *     summary: Crea un nuevo cliente
+*     security:
+*       - bearerAuth: []
 *     tags:
 *       - Clientes
 *     description: Crea un nuevo cliente con la información proporcionada.
@@ -81,13 +87,15 @@ router.get('/get/:id',controller.getClientController)
 *       400:
 *         description: Datos de cliente no válidos.
 */
-router.post('/insert',controller.insertClientController)
+router.post('/insert',verifyToken,controller.insertClientController)
 
 /**
 * @swagger
 * /api/client/update/{id}:
 *   put:
 *     summary: Actualiza los datos del cliente
+*     security:
+*       - bearerAuth: []
 *     tags:
 *       - Clientes
 *     description: Actualiza un cliente con información proporcionada.
@@ -126,7 +134,7 @@ router.post('/insert',controller.insertClientController)
 *       400:
 *         description: Datos de cliente no válidos.
  */
-router.put('/update/:id',controller.updateClientController)
+router.put('/update/:id',verifyToken,controller.updateClientController)
 
 
 /**
@@ -134,6 +142,8 @@ router.put('/update/:id',controller.updateClientController)
 * /api/client/enableclient/{id}:
 *   put:
 *     summary: Activa el cliente
+*     security:
+*       - bearerAuth: []
 *     tags:
 *       - Clientes
 *     description: Activa el cliente
@@ -150,7 +160,7 @@ router.put('/update/:id',controller.updateClientController)
 *       400:
 *         description: Datos de cliente no válidos.
  */
-router.put('/enableclient/:id',controller.enableClientController)
+router.put('/enableclient/:id',verifyToken,controller.enableClientController)
 
 
 
@@ -160,6 +170,8 @@ router.put('/enableclient/:id',controller.enableClientController)
 * /api/client/disableclient/{id}:
 *   delete:
 *     summary: Desactiva el cliente
+*     security:
+*       - bearerAuth: []
 *     tags:
 *       - Clientes
 *     description: Desactiva el cliente
@@ -176,8 +188,7 @@ router.put('/enableclient/:id',controller.enableClientController)
 *       400:
 *         description: Datos de cliente no válidos.
  */
-router.delete('/disableclient/:id',controller.disableClientController)
+router.delete('/disableclient/:id',verifyToken,controller.disableClientController)
 
 
-router.post('/delete',controller.deleteClientController)
 export default router

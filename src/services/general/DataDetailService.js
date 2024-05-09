@@ -3,6 +3,8 @@ import DataDetail from '../../models/dataDetail.js'
 
 
 const getList= async(dataId)=>{ 
+console.log("solocita el dataId:",dataId)
+
   try{
     const list = await DataDetail.findAll({
       attributes: [

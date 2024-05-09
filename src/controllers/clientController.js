@@ -68,19 +68,11 @@ async function getClientController(req, res) {
 
 
 
-
-async function deleteClientController(req, res) {
-    res.send("deleteClient");
-}
-
-
-
 export default {
     listClientsController,
     insertClientController,
     updateClientController,
     getClientController,
-    deleteClientController,
     enableClientController,
     disableClientController
 }
