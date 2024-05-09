@@ -158,7 +158,7 @@ router.put('/enableclient/:id',controller.enableClientController)
 /**
 * @swagger
 * /api/client/disableclient/{id}:
-*   put:
+*   delete:
 *     summary: Desactiva el cliente
 *     tags:
 *       - Clientes
@@ -176,7 +176,7 @@ router.put('/enableclient/:id',controller.enableClientController)
 *       400:
 *         description: Datos de cliente no válidos.
  */
-router.put('/disableclient/:id',controller.disableClientController)
+router.delete('/disableclient/:id',controller.disableClientController)
 
 
 router.post('/delete',controller.deleteClientController)
