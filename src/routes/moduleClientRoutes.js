@@ -76,7 +76,7 @@ router.post('/insert',controller.insertController)
 /**
 * @swagger
 * /api/moduleclient/delete:
-*   post:
+*   delete:
 *     summary: elimina un modulo asociado a un cliente
 *     tags:
 *       - ModuleClient
@@ -99,5 +99,5 @@ router.post('/insert',controller.insertController)
 *       500:
 *         description: Error interno del servidor.
 */
-router.post('/delete',controller.deleteController)
+router.delete('/delete',controller.deleteController)
 export default router
