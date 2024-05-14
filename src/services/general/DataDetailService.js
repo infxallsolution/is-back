@@ -40,12 +40,14 @@ const getDataDetailsByClient = async (clientId) => {
             ['xValue', 'time'],
             ['yValue', 'value'],
           ],
-          order: [['time', 'ASC']],
           required: true
         }
       ],
       attributes: ['id', 'name'],
-      where: {clientId}
+      where: {clientId},
+      order: [
+        [ { model: DataDetail }, 'xValue', 'ASC' ]  
+      ]
     });
 
     return { list: list, status: 200 };
