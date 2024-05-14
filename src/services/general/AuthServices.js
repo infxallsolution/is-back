@@ -25,7 +25,9 @@ const login= async(body)=>{
     }
     const token = jwt.sign(
         {
-            id:user.id
+          id:user.id,          
+          clientId:user.clientId,          
+          type:client.type
         },
         JWT_SECRET,
         {

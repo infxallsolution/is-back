@@ -21,6 +21,7 @@ cron.schedule('*/30 * * * *', async () => {
     const client = await Client.findOne( { where : {id:clientId}}); 
     const company = client.company
 
+    ///Recorro el listado de series que tiene un usuario asignado
     for (const data of datas) {
       let dataId = data.id
       let endpoint = data.endpoint
@@ -28,7 +29,9 @@ cron.schedule('*/30 * * * *', async () => {
       let url = `${urlService}${endpoint}?productsEnum=${product}&company=${company}`
       console.log(`LA URL ES: ${url} y su dataId: ${dataId}`)
 
-      const datadetails = await getData(url);  
+      const datadetails = await getData(url); 
+      
+      ///Ingreso los datadetails que retorna el ednpoint
       for (const item of datadetails) {
         let xValue = item.x
         let yValue = item.y
