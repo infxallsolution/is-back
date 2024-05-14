@@ -28,7 +28,7 @@ const login= async(body)=>{
           id:user.id,          
           clientId:user.clientId,          
           type:client.type,          
-          type:client.name
+          name:client.name
         },
         JWT_SECRET,
         {
