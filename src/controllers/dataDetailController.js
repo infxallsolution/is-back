@@ -25,7 +25,17 @@ async function listByClient(req, res) {
 }
 
 
+async function listByClientDate(req, res) {
+    if (!req.params.id) {
+        return res.status(400).json({ message: "se necesita el id del cliente" });
+    }   
+    let dataresult = await dataDetailService.getDataDetailsByClientDate(req.params.id);
+    return res.status(dataresult.status).json(dataresult.list);
+}
+
+
 export default {
     listController,
-    listByClient
+    listByClient,
+    listByClientDate
 }

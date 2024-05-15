@@ -1,30 +1,110 @@
 
 import DataDetail from '../../models/dataDetail.js'
 import Data from '../../models/data.js'
+import { Op } from "sequelize";
 
 
-const getList = async (dataId) => {
+
+///se debe llamar algo así como dashboar cliente. compuesto por todos los dada del cliente y sus series
+const getDataDetailsByClient= async(clientId)=>{ 
+  try{
+    const list = await Data.findAll({ 
+      where : {clientId},
+      attributes:  ['id', 'name'] 
+    });
+
+
+    const arreglo = []
+    for (const item of list) {
+        console.log(item.id)
+        let data = await getListData(item.id)
+        arreglo.push({ title: item.name, data});
+    }
+
+
+    return { list:arreglo, status:200 };
+  }catch(err){
+    return { list:null, status:500 , error:err };
+  }  
+}
+
+
+
+
+
+
+
+
+///METODO LOCAL QUE SIRVE PARA TRAER LOS DIFERENTES DATA Y OBTENER SU DATADETAIL
+const getListData = async (dataId) => {
   console.log("solocita el dataId:", dataId)
+  const data = await Data.findOne({where : {id:dataId}});
+  let products = data.product;
+  const list = products.split(',');
+  const arreglo = []
+  for (const item of list) {
+    console.log(item); 
+    let dataDetails = await getDataDetailsByData(dataId,item)
+    arreglo.push({ title: item, data:dataDetails});
+    console.log(dataDetails)
+  }
+  return arreglo;
+}
 
+
+///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA
+const getDataDetailsByData = async (dataId,product) => {
   try {
     const list = await DataDetail.findAll({
       attributes: [
         ['xValue', 'time'],
-        ['yValue', 'value'],
+        ['yValue', 'value']
       ],
-      where: { dataId },
+      where: { dataId, name:product },
       order: [['time', 'ASC']]
     }
-    );
-    return { list: list, status: 200 };
+    );  
+    return list;
   } catch (err) {
-    return { list: null, status: 500, error: err };
+    return null;
   }
 }
 
 
 
-const getDataDetailsByClient = async (clientId) => {
+
+
+
+const getList = async (dataId) => {
+  console.log("solocita el dataId:", dataId)
+  const data = await Data.findOne({where : {id:dataId}});
+  let products = data.product;
+  const list = products.split(',');
+  const arreglo = []
+  for (const item of list) {
+    console.log(item); 
+    let dataDetails = await getDataDetailsByData(dataId,item)
+    arreglo.push({ title: item, data:dataDetails});
+    console.log(dataDetails)
+  }
+  return { list: arreglo, status: 200 };
+}
+
+
+
+
+
+
+
+
+
+
+
+const getDataDetailsByClientDate = async (clientId) => {
+
+
+  const startDate = new Date('2023-01-01');
+  const endDate = new Date('2023-12-31');
 
   
   DataDetail.belongsTo(Data, { foreignKey: 'dataId'})
@@ -39,8 +119,10 @@ const getDataDetailsByClient = async (clientId) => {
           attributes: [
             ['xValue', 'time'],
             ['yValue', 'value'],
+            ['name', 'name'],
           ],
-          required: true
+          required: true,
+          where:{xValue: { [Op.between]: [startDate, endDate] }}
         }
       ],
       attributes: ['id', 'name'],
@@ -49,6 +131,8 @@ const getDataDetailsByClient = async (clientId) => {
         [ { model: DataDetail }, 'xValue', 'ASC' ]  
       ]
     });
+
+  
 
     return { list: list, status: 200 };
   } catch (err) {
@@ -62,7 +146,50 @@ const getDataDetailsByClient = async (clientId) => {
 
 
 
+
+///////NO UTILIZO/////////
+const getListGroup = async (dataId) => {
+  console.log("solocita el dataId:", dataId)
+
+  try {
+    const list = await DataDetail.findAll({
+      attributes: [
+        ['xValue', 'time'],
+        ['yValue', 'value'],
+        ['name', 'name'],
+      ],
+      where: { dataId },
+      order: [['time', 'ASC']]
+    }
+    );
+
+    
+      // Group by product using ES6
+      const groupedData = list.reduce((acc, movement) => {
+        console.log(movement.dataValues)
+        if (!acc[movement.name]) {
+          acc[movement.name] = [];
+        }
+        acc[movement.name].push({
+          time: movement.dataValues.time,
+          value: movement.dataValues.value
+        });
+        return acc;
+      }, {});
+
+      
+
+
+    return { list: groupedData, status: 200 };
+  } catch (err) {
+    return { list: null, status: 500, error: err };
+  }
+}
+
+
+
 export default {
   getList,
-  getDataDetailsByClient
+  getDataDetailsByClient,
+  getDataDetailsByClientDate
 };
