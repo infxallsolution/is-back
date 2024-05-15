@@ -14,7 +14,7 @@ const clientId = process.env.ID_CLIENT
 const urlService = process.env.URL_SERVICE
 
 
-cron.schedule('*/30 * * * *', async () => {
+cron.schedule('*/2 * * * *', async () => {
 
   try {
     const datas = await Data.findAll({ where: { clientId } });
@@ -35,8 +35,9 @@ cron.schedule('*/30 * * * *', async () => {
       for (const item of datadetails) {
         let xValue = item.x
         let yValue = item.y
+        let name = item.name
         var id = uuidv4() 
-        let object = {id,dataId,name:product,xValue,yValue}
+        let object = {id,dataId,name,xValue,yValue}
         const model = await DataDetail.findOne( { where : {xValue,dataId}});
         if(model==null){
           DataDetail.create(object)  
