@@ -11,6 +11,12 @@ dotenv.config();
 //import './services/jobs/synchronizeUsers.js'
 //import './services/jobs/synchronizeData.js'
 
+
+//import './services/jobs/recivedDailyByProduct.js'
+//import './services/jobs/productionDailyByProduct.js'
+//import './services/jobs/recivedPeriodByProduct.js'
+//import './services/jobs/productionPeriodByProduct.js'
+
 const port = process.env.PORT || 7000; 
 
 const app = express();
