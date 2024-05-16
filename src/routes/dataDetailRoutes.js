@@ -28,7 +28,7 @@ router.get('/list/:id',controller.listController)
 
 /**
 * @swagger
-* /api/dashboard/listbyclient/{id}:
+* /api/dashboard/listbyclient/{id}/{option}:
 *   get:
 *     summary: Obtiene el listado completo de los data y sus respectivos datadetails, mediante el clientId
 *     tags:
@@ -41,13 +41,19 @@ router.get('/list/:id',controller.listController)
 *         required: true
 *         schema:
 *           type: string
+*       - in: path
+*         name: option
+*         description: DAY, MOUNTH, YEAR
+*         required: true
+*         schema:
+*           type: string
 *     responses:
 *       200:
 *         description: Operación exitosa. Devuelve el listado completo de los data y sus respectivos datadetails
 *       500:
 *         description: Error interno del servidor.
 */
-router.get('/listbyclient/:id',controller.listByClient)
+router.get('/listbyclient/:id/:option',controller.listByClient)
 
 
 
