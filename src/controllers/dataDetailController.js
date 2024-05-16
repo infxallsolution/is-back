@@ -20,7 +20,7 @@ async function listByClient(req, res) {
     if (!req.params.id) {
         return res.status(400).json({ message: "se necesita el id del cliente" });
     }   
-    let dataresult = await dataDetailService.getDataDetailsByClient(req.params.id);
+    let dataresult = await dataDetailService.getDataDetailsByClient(req.params.id,req.params.option);
     return res.status(dataresult.status).json(dataresult.list);
 }
 
