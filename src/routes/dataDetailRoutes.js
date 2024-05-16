@@ -47,6 +47,7 @@ router.get('/list/:id',controller.listController)
 *         required: true
 *         schema:
 *           type: string
+*           enum: [DAY, MONTH, YEAR]
 *     responses:
 *       200:
 *         description: Operación exitosa. Devuelve el listado completo de los data y sus respectivos datadetails
