@@ -161,10 +161,10 @@ const getDataDetailsByDataByMonth = async (dataId, product) => {
   try {
     const list = await DataDetail.findAll({
       attributes: [
-        [Sequelize.literal("CONCAT(YEAR(xValue), '-', LPAD(MONTH(xValue), 2, '0'))"), 'xValue'],
+        [Sequelize.literal("CONCAT(YEAR(xValue), '-', LPAD(MONTH(xValue), 2, '0'), '-01')"), 'xValue'],
         [Sequelize.fn('SUM', Sequelize.col('yValue')), 'value'],
       ],
-      group: [Sequelize.literal("CONCAT(YEAR(xValue), '-', LPAD(MONTH(xValue), 2, '0'))")],
+      group: [Sequelize.literal("CONCAT(YEAR(xValue), '-', LPAD(MONTH(xValue), 2, '0'), '-01')"), 'xValue'],
       where: { dataId, name: product },      
       order: [['xValue', 'ASC']]
     }

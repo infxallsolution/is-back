@@ -19,8 +19,11 @@ async function listController(req, res) {
 async function listByClient(req, res) {
     if (!req.params.id) {
         return res.status(400).json({ message: "se necesita el id del cliente" });
+    }  
+    if (!req.query.option) {
+        return res.status(400).json({ message: "se necesita el option" });
     }   
-    let dataresult = await dataDetailService.getDataDetailsByClient(req.params.id,req.params.option);
+    let dataresult = await dataDetailService.getDataDetailsByClient(req.params.id,req.query.option);
     return res.status(dataresult.status).json(dataresult.list);
 }
 
