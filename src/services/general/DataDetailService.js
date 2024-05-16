@@ -16,7 +16,6 @@ const getDataDetailsByClient= async(clientId)=>{
 
     const arreglo = []
     for (const item of list) {
-        console.log(item.id)
         let data = await getListData(item.id)
         arreglo.push({ title: item.name, data});
     }
@@ -43,10 +42,8 @@ const getListData = async (dataId) => {
   const list = products.split(',');
   const arreglo = []
   for (const item of list) {
-    console.log(item); 
     let dataDetails = await getDataDetailsByData(dataId,item)
     arreglo.push({ title: item, data:dataDetails});
-    console.log(dataDetails)
   }
   return arreglo;
 }
@@ -82,10 +79,8 @@ const getList = async (dataId) => {
   const list = products.split(',');
   const arreglo = []
   for (const item of list) {
-    console.log(item); 
     let dataDetails = await getDataDetailsByData(dataId,item)
     arreglo.push({ title: item, data:dataDetails});
-    console.log(dataDetails)
   }
   return { list: arreglo, status: 200 };
 }
@@ -101,16 +96,10 @@ const getList = async (dataId) => {
 
 
 const getDataDetailsByClientDate = async (clientId) => {
-
-
   const startDate = new Date('2023-01-01');
-  const endDate = new Date('2023-12-31');
-
-  
+  const endDate = new Date('2023-12-31');  
   DataDetail.belongsTo(Data, { foreignKey: 'dataId'})
   Data.hasMany(DataDetail, { foreignKey: 'dataId'})
-
-
   try {
     const list = await Data.findAll({
       include: [
@@ -130,9 +119,7 @@ const getDataDetailsByClientDate = async (clientId) => {
       order: [
         [ { model: DataDetail }, 'xValue', 'ASC' ]  
       ]
-    });
-
-  
+    });  
 
     return { list: list, status: 200 };
   } catch (err) {
@@ -140,51 +127,10 @@ const getDataDetailsByClientDate = async (clientId) => {
     return { list: null, status: 500, error: err };
   }
 
-
 }
 
 
 
-
-
-///////NO UTILIZO/////////
-const getListGroup = async (dataId) => {
-  console.log("solocita el dataId:", dataId)
-
-  try {
-    const list = await DataDetail.findAll({
-      attributes: [
-        ['xValue', 'time'],
-        ['yValue', 'value'],
-        ['name', 'name'],
-      ],
-      where: { dataId },
-      order: [['time', 'ASC']]
-    }
-    );
-
-    
-      // Group by product using ES6
-      const groupedData = list.reduce((acc, movement) => {
-        console.log(movement.dataValues)
-        if (!acc[movement.name]) {
-          acc[movement.name] = [];
-        }
-        acc[movement.name].push({
-          time: movement.dataValues.time,
-          value: movement.dataValues.value
-        });
-        return acc;
-      }, {});
-
-      
-
-
-    return { list: groupedData, status: 200 };
-  } catch (err) {
-    return { list: null, status: 500, error: err };
-  }
-}
 
 
 
