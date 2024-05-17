@@ -112,8 +112,8 @@ const getListData = async (dataId, option) => {
 
 ///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA
 const getDataDetailsByData = async (dataId, product) => {
-  const startDate = new Date('2024-01-01');
-  const endDate = new Date('2024-12-31');
+  const startDate = new Date('2024-04-17');
+  const endDate = new Date('2024-05-17');
   console.log("ENTRO POR EL DIARIO")
   try {
     const list = await DataDetail.findAll({
