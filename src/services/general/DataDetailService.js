@@ -2,6 +2,7 @@
 import DataDetail from '../../models/dataDetail.js'
 import Data from '../../models/data.js'
 import { Op } from "sequelize";
+import  moment  from "moment";
 import { Sequelize } from 'sequelize';
 
 
@@ -112,8 +113,11 @@ const getListData = async (dataId, option) => {
 
 ///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA
 const getDataDetailsByData = async (dataId, product) => {
-  const startDate = new Date('2024-04-17');
-  const endDate = new Date('2024-05-17');
+  const currentDate = moment();
+  const pastDate = moment().subtract(30, 'days');
+  //const desde = pastDate.format('YYYY-MM-DD')
+  //const hasta = currentDate.format('YYYY-MM-DD')
+  
   console.log("ENTRO POR EL DIARIO")
   try {
     const list = await DataDetail.findAll({
@@ -121,7 +125,7 @@ const getDataDetailsByData = async (dataId, product) => {
         ['xValue', 'time'],
         ['yValue', 'value']
       ],
-      where: { dataId, name: product,xValue: { [Op.between]: [startDate, endDate] } },
+      where: { dataId, name: product,xValue: { [Op.between]: [pastDate, currentDate] } },
       order: [['xValue', 'ASC']]
     }
     );
@@ -131,29 +135,29 @@ const getDataDetailsByData = async (dataId, product) => {
   }
 }
 
-//where: { xValue: { [Op.between]: [startDate, endDate] } }
-
-
 
 ///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA BY YEAR
 const getDataDetailsByDataByYear = async (dataId, product) => {
-  console.log("ingreso por YEAR...", dataId)
+
+  // Atributo para mostrar el año: [Sequelize.fn('YEAR', Sequelize.col('xValue')), 'year'],
+  
   try {
     const list = await DataDetail.findAll({
       attributes: [
-        [Sequelize.fn('YEAR', Sequelize.col('xValue')), 'time'],
-        [Sequelize.fn('SUM', Sequelize.col('yValue')), 'value'],
+          [Sequelize.literal("STR_TO_DATE(CONCAT(YEAR(xValue), '-01-01'), '%Y-%m-%d')"), 'time'],
+          [Sequelize.fn('SUM', Sequelize.col('yValue')), 'value'],
       ],
-      group: [Sequelize.fn('YEAR', Sequelize.col('xValue'))],
-      where: { dataId, name: product },
-      order: [['time', 'ASC']]
-    }
-    );
-
-    //console.log(list)
+      group: [
+          Sequelize.fn('YEAR', Sequelize.col('xValue')),
+          Sequelize.literal("STR_TO_DATE(CONCAT(YEAR(xValue), '-01-01'), '%Y-%m-%d')")
+      ],
+      order: [['time', 'ASC']],
+      raw: true,
+  });
 
     return list;
   } catch (err) {
+    console.log("ERROR:::",err)
     return null;
   }
 }
@@ -163,24 +167,29 @@ const getDataDetailsByDataByYear = async (dataId, product) => {
 
 ///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA POR MES
 const getDataDetailsByDataByMonth = async (dataId, product) => {
-  console.log("ENTRO POR EL MENSUAL")
+
+  //atributo para mostrar el mes: [Sequelize.fn('DATE_TRUNC', 'month', Sequelize.col('createdAt')), 'month'],
   try {
     const list = await DataDetail.findAll({
       attributes: [
-        [Sequelize.literal("CONCAT(YEAR(xValue), '-', LPAD(MONTH(xValue), 2, '0'), '-01')"), 'time'],
-        [Sequelize.fn('SUM', Sequelize.col('yValue')), 'value'],
+          [Sequelize.literal("STR_TO_DATE(CONCAT(YEAR(xValue), '-', LPAD(MONTH(xValue), 2, '0'), '-01'), '%Y-%m-%d')"), 'time'],
+          [Sequelize.fn('SUM', Sequelize.col('yValue')), 'value'],
       ],
-      group: [Sequelize.literal("CONCAT(YEAR(xValue), '-', LPAD(MONTH(xValue), 2, '0'), '-01')"), 'time'],
-      where: { dataId, name: product },
-      order: [['time', 'ASC']]
-    }
-    );
+      group: [
+          Sequelize.fn('YEAR', Sequelize.col('xValue')),
+          Sequelize.fn('MONTH', Sequelize.col('xValue')),
+          Sequelize.literal("STR_TO_DATE(CONCAT(YEAR(xValue), '-', LPAD(MONTH(xValue), 2, '0'), '-01'), '%Y-%m-%d')")
+      ],
+      order: [['time', 'ASC']],
+      raw: true,
+  });
     return list;
   } catch (err) {
     console.log("Existio un error:", err)
     return null;
   }
 }
+
 
 
 

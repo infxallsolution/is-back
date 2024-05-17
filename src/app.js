@@ -9,7 +9,6 @@ dotenv.config();
 
 ///ejecuto los jobs de sincronización ///
 //import './services/jobs/synchronizeUsers.js'
-//import './services/jobs/synchronizeData.js'
 
 
 //import './services/jobs/recivedDailyByProduct.js'
