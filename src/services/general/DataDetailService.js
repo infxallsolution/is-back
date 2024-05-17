@@ -68,7 +68,7 @@ const getDataDetailsByClientDate = async (clientId) => {
       attributes: ['id', 'name'],
       where: { clientId },
       order: [
-        [{ model: DataDetail }, 'xValue', 'ASC']
+        [{ model: DataDetail }, 'time', 'ASC']
       ]
     });
 
