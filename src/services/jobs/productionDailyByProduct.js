@@ -25,8 +25,8 @@ cron.schedule('* * * * *', async () => {
     
       let dataId = "c4ebd95d-66c5-4625-bb8d-d2fb01521f43"
       let endpoint = "get-production-daily-by-product"
-      let product = "ADPA"
-      let year = "2024"
+      let product = "CPO"
+      let year = "2020"
       let url = `${urlService}${endpoint}?productsEnum=${product}&company=${company}&year=${year}`
       console.log(`LA URL ES: ${url} y su dataId: ${dataId}`)
 

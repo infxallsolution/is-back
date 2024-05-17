@@ -7,7 +7,7 @@ import { Sequelize } from 'sequelize';
 
 
 ///se debe llamar algo así como dashboar cliente. compuesto por todos los dada del cliente y sus series
-const getDataDetailsByClient = async (clientId,option) => {
+const getDataDetailsByClient = async (clientId, option) => {
   try {
     const list = await Data.findAll({
       where: { clientId },
@@ -15,7 +15,7 @@ const getDataDetailsByClient = async (clientId,option) => {
     });
     const arreglo = []
     for (const item of list) {
-      let data = await getListData(item.id,option)
+      let data = await getListData(item.id, option)
       arreglo.push({ title: item.name, data });
     }
     return { list: arreglo, status: 200 };
@@ -84,30 +84,27 @@ const getDataDetailsByClientDate = async (clientId) => {
 
 
 ///METODO LOCAL QUE SIRVE PARA TRAER LOS DIFERENTES DATA Y OBTENER SU DATADETAIL
-const getListData = async (dataId,option) => {
+const getListData = async (dataId, option) => {
   console.log("solocita el dataId:", dataId)
   const data = await Data.findOne({ where: { id: dataId } });
   let products = data.product;
   const list = products.split(',');
   const arreglo = []
   for (const item of list) {
-    console.log("option::::"+option)
-    if(option=="YEAR")
-      {
-        let dataDetails = await getDataDetailsByDataByYear(dataId, item)
-        arreglo.push({ title: item, data: dataDetails });
-      }
-    if(option=="MONTH")
-        {
-          let dataDetails = await getDataDetailsByDataByMonth(dataId, item)
-          arreglo.push({ title: item, data: dataDetails });
+    console.log("option::::" + option)
+    if (option == "YEAR") {
+      let dataDetails = await getDataDetailsByDataByYear(dataId, item)
+      arreglo.push({ title: item, data: dataDetails });
     }
-    else
-      {
-        let dataDetails = await getDataDetailsByData(dataId, item)
-        arreglo.push({ title: item, data: dataDetails });
-      }
-    
+    else if (option == "MONTH") {
+      let dataDetails = await getDataDetailsByDataByMonth(dataId, item)
+      arreglo.push({ title: item, data: dataDetails });
+    }
+    else {
+      let dataDetails = await getDataDetailsByData(dataId, item)
+      arreglo.push({ title: item, data: dataDetails });
+    }
+
   }
   return arreglo;
 }
@@ -115,6 +112,7 @@ const getListData = async (dataId,option) => {
 
 ///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA
 const getDataDetailsByData = async (dataId, product) => {
+  console.log("ENTRO POR EL DIARIO")
   try {
     const list = await DataDetail.findAll({
       attributes: [
@@ -135,6 +133,7 @@ const getDataDetailsByData = async (dataId, product) => {
 
 ///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA BY YEAR
 const getDataDetailsByDataByYear = async (dataId, product) => {
+  console.log("ingreso por YEAR...", dataId)
   try {
     const list = await DataDetail.findAll({
       attributes: [
@@ -142,11 +141,13 @@ const getDataDetailsByDataByYear = async (dataId, product) => {
         [Sequelize.fn('SUM', Sequelize.col('yValue')), 'value'],
       ],
       group: [Sequelize.fn('YEAR', Sequelize.col('xValue'))],
-      where: { dataId, name: product },      
-      order: [['time', 'ASC']],
-      raw: true
+      where: { dataId, name: product },
+      order: [['time', 'ASC']]
     }
     );
+
+    //console.log(list)
+
     return list;
   } catch (err) {
     return null;
@@ -158,6 +159,7 @@ const getDataDetailsByDataByYear = async (dataId, product) => {
 
 ///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA POR MES
 const getDataDetailsByDataByMonth = async (dataId, product) => {
+  console.log("ENTRO POR EL MENSUAL")
   try {
     const list = await DataDetail.findAll({
       attributes: [
@@ -165,13 +167,13 @@ const getDataDetailsByDataByMonth = async (dataId, product) => {
         [Sequelize.fn('SUM', Sequelize.col('yValue')), 'value'],
       ],
       group: [Sequelize.literal("CONCAT(YEAR(xValue), '-', LPAD(MONTH(xValue), 2, '0'), '-01')"), 'time'],
-      where: { dataId, name: product },      
+      where: { dataId, name: product },
       order: [['time', 'ASC']]
     }
     );
     return list;
   } catch (err) {
-    console.log("Existio un error:",err)
+    console.log("Existio un error:", err)
     return null;
   }
 }
