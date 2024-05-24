@@ -20,12 +20,12 @@ const login= async(body)=>{
     }
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
-      console.error('Contraseña incorrecta');
       return { message: 'Contraseña incorrecta', status:401 };
     }
     const token = jwt.sign(
         {
-          id:user.id,          
+          id:user.id,      
+          user:user.username,          
           clientId:user.clientId,          
           type:client.type,          
           name:client.name
@@ -36,20 +36,15 @@ const login= async(body)=>{
         });
     return { token, status:200 };
   } catch (error) {
-    console.error('Error en el login:', error);
     return { message: 'Error en el servidor', status:500 };
   }
 }
 
 
 const insertUser= async(body)=>{
-  console.log("antes")
-  console.log("body:",body)
-  console.log("despues")
   var id = uuidv4()
   const passwordHash = await bcrypt.hash(body.password,7)
   const identification = body.identification
-  console.log(passwordHash)
   try{
     const client = await Client.findOne({ where: { identification } });
     if(client==null){
@@ -58,7 +53,6 @@ const insertUser= async(body)=>{
     const clientId = client.id
     body.password= passwordHash
     var usuario = {...body,id,clientId}
-    console.log("usuario",usuario)
     var res = await User.create(usuario)
     return { message: 'Usuario creado', status:200 };
   }catch(err){

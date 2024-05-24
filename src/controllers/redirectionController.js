@@ -9,12 +9,18 @@ async function redirectToModuleController(req,res){
 
     
     console.log("va por aca 1") 
+   // console.log(req) 
     
     if (!req.params.module) {
         return res.status(400).json({ message: "se necesita el modulo" });
     } 
+    
     let module = req.params.module
-    let dataresult = await service.redirectToModule(module); 
+    let clientId = req.user.clientId
+    let name = req.user.name
+    let token = req.token
+
+    let dataresult = await service.redirectToModule(module,name,token); 
     return res.status(dataresult.status).json(dataresult); 
 }
 
