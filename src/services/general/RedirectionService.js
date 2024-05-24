@@ -2,10 +2,9 @@
 
 
 
-const redirectToModule = async (module) => {
-  console.log(module) 
+const redirectToModule = async (module,name,token) => {
   try {
-    let url = 'http://app.infos.com/' + module
+    let url = `http://${name}.infxsolution.com/${module}?token=${token}`;
     return { redirectTo: url, status: 200 };
   } catch (err) {
     return { message: 'Error en el servidor', status: 500, error: err };
