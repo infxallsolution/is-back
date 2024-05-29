@@ -1,5 +1,7 @@
 
 import Client from '../../models/client.js'
+import Module from '../../models/module.js'
+import ModuleClient from '../../models/moduleClient.js'
 import { v4 as uuidv4} from 'uuid';
 import mysql from  'mysql2'
 
@@ -33,13 +35,32 @@ const getList= async()=>{
 
 const insertClient= async(body)=>{
   var id = uuidv4()
+  let clientId = id
   var client = {...body,id}
   let identification = client.identification
   try{
 
-    const model = await Client.findOne( { where : {identification}});
+    let model = await Client.findOne( { where : {identification}});
     if(model==null){
       await Client.create(client)
+
+
+      ///Agrego todos los modulos al cliente///
+      const listModules = await Module.findAll();
+      for (const module of listModules) {
+        let moduleId = module.id
+        
+        console.log(`Inteta buscar el moduleclient del modulo ${moduleId} y del cliente: ${clientId}`)
+        model = await ModuleClient.findOne({ where: { moduleId, clientId } });
+        if (model == null) {          
+          console.log(`Inteta crear el moduleclient del modulo ${moduleId} y del cliente: ${clientId}`)
+          let state = false
+          let idModuleClient = uuidv4()
+          await ModuleClient.create({id:idModuleClient, clientId, moduleId, state})
+        }
+      }
+
+
       return { message: 'Cliente ingresado', status:200 };
     }
     else{

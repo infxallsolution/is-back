@@ -83,23 +83,7 @@ const getList= async()=>{
 
 const insert= async(body)=>{
   try{
-
-    const model = await ModuleClient.findOne( { where : {moduleId:body.moduleId, clientId: body.clientId}});
-    console.log(model)
-
-    if(model==null){
-      let moduleClient = {...body,state:true}
-      await ModuleClient.create(moduleClient)
-      return { message: 'Modulo asignado', status:200 };
-    }
-    else{
-      console.log("ido del modulo:"+model.id)
-      await ModuleClient.update(
-        {state:true},
-        { where: { id: model.id } }
-      ) 
-      return { message: 'Modulo activado', status:200 };
-    }
+    return { message: 'Modulo activado', status:200 };
   }catch(err){
     return { message: 'Error en el servidor', status:500 , error:err };
   }  

@@ -15,6 +15,10 @@ const Module = sequelize.define('modules', {
     type: DataTypes.STRING(50),
     allowNull: false
   },
+  description: {
+    type: DataTypes.STRING(50),
+    allowNull: true
+  },
   state: {
     type: DataTypes.BOOLEAN,
     allowNull: false
