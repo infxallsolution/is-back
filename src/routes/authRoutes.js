@@ -20,7 +20,7 @@ const router = express.Router();
 *             properties:
 *               username:
 *                 type: string
-*                 default: pperez
+*                 default: rgomez
 *               password:
 *                 type: string
 *                 default: 1234567
