@@ -16,7 +16,7 @@ const router = express.Router()
 *         name: module
 *         description: Modulo
 *         required: true
-*         default: nomina
+*         default: Administracion
 *         schema:
 *           type: string
 *     responses:
