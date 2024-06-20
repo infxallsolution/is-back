@@ -13,6 +13,8 @@ dotenv.config();
 
 //import './services/jobs/recivedDailyByProduct.js'
 //import './services/jobs/productionDailyByProduct.js'
+
+
 //import './services/jobs/recivedPeriodByProduct.js'
 //import './services/jobs/productionPeriodByProduct.js'
 

@@ -23,7 +23,7 @@ const router = express.Router();
 *                 default: rgomez
 *               password:
 *                 type: string
-*                 default: 1234567
+*                 default: rags
 *               identification:
 *                 type: string
 *                 default: 100
