@@ -78,10 +78,18 @@ const getListData = async (dataId, option) => {
 
 ///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA
 const getDataDetailsByData = async (dataId, product) => {
-  const currentDate = moment();
-  const pastDate = moment().subtract(30, 'days');
-  //const desde = pastDate.format('YYYY-MM-DD')
-  //const hasta = currentDate.format('YYYY-MM-DD')  
+
+  const fechaUltimoRegistro = await getFechaUltimoRegistro();
+
+  if (!fechaUltimoRegistro) {
+    console.log('No se encontró ningún registro.');
+    return;
+  }
+
+  const treintaDiasAtras = moment(fechaUltimoRegistro).subtract(30, 'days').toDate();  
+
+  console.log(treintaDiasAtras)
+  
   console.log("ENTRO POR EL DIARIO")
   try {
     const list = await DataDetail.findAll({
@@ -89,12 +97,13 @@ const getDataDetailsByData = async (dataId, product) => {
         ['xValue', 'time'],
         ['yValue', 'value']
       ],
-      where: { dataId, name: product,xValue: { [Op.between]: [pastDate, currentDate] } },
+      where: { dataId, name: product,xValue: { [Op.between]: [treintaDiasAtras, fechaUltimoRegistro] } },
       order: [['xValue', 'ASC']]
     }
     );
     return list;
   } catch (err) {
+    console.log(err)
     return null;
   }
 }
@@ -131,10 +140,17 @@ const getDataDetailsByDataByYear = async (dataId, product) => {
 ///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA POR MES
 const getDataDetailsByDataByMonth = async (dataId, product) => {
 
+  const fechaUltimoRegistro = await getFechaUltimoRegistro();
 
+  if (!fechaUltimoRegistro) {
+    console.log('No se encontró ningún registro.');
+    return;
+  }
+
+  const unAnioAtras = moment(fechaUltimoRegistro).subtract(1, 'year').toDate();  
   
-  const currentDate = moment();
-  const pastDate = moment().subtract(1, 'year');
+  //const currentDate = moment();
+  //const pastDate = moment().subtract(1, 'year');
 
   //atributo para mostrar el mes: [Sequelize.fn('DATE_TRUNC', 'month', Sequelize.col('createdAt')), 'month'],
   try {
@@ -143,7 +159,7 @@ const getDataDetailsByDataByMonth = async (dataId, product) => {
           [Sequelize.literal("STR_TO_DATE(CONCAT(YEAR(xValue), '-', LPAD(MONTH(xValue), 2, '0'), '-01'), '%Y-%m-%d')"), 'time'],
           [Sequelize.fn('SUM', Sequelize.col('yValue')), 'value'],
       ],
-      where: { dataId, name: product,xValue: { [Op.between]: [pastDate, currentDate] } },
+      where: { dataId, name: product,xValue: { [Op.between]: [unAnioAtras, fechaUltimoRegistro] } },
       group: [
           Sequelize.fn('YEAR', Sequelize.col('xValue')),
           Sequelize.fn('MONTH', Sequelize.col('xValue')),
@@ -160,7 +176,18 @@ const getDataDetailsByDataByMonth = async (dataId, product) => {
 }
 
 
+async function getFechaUltimoRegistro() {
+  try {
+    const ultimoRegistro = await DataDetail.findOne({
+      attributes: ['xValue'],
+      order: [['xValue', 'DESC']]
+    });
 
+    return ultimoRegistro ? ultimoRegistro.xValue : null;
+  } catch (error) {
+    console.error('Error al obtener la fecha del último registro:', error);
+  }
+}
 
 
 
