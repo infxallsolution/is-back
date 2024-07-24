@@ -14,7 +14,7 @@ const clientId = process.env.ID_CLIENT
 const urlService = process.env.URL_SERVICE
 
 
-cron.schedule('* * * * *', async () => {
+cron.schedule('*/30 * * * *', async () => {
 
   try {
     const datas = await Data.findAll({ where: { clientId } });
