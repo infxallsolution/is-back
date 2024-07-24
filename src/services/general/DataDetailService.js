@@ -149,10 +149,7 @@ const getDataDetailsByDataByMonth = async (dataId, product) => {
 
   const unAnioAtras = moment(fechaUltimoRegistro).subtract(1, 'year').toDate();  
   
-  //const currentDate = moment();
-  //const pastDate = moment().subtract(1, 'year');
 
-  //atributo para mostrar el mes: [Sequelize.fn('DATE_TRUNC', 'month', Sequelize.col('createdAt')), 'month'],
   try {
     const list = await DataDetail.findAll({
       attributes: [
@@ -186,6 +183,7 @@ async function getFechaUltimoRegistro() {
     return ultimoRegistro ? ultimoRegistro.xValue : null;
   } catch (error) {
     console.error('Error al obtener la fecha del último registro:', error);
+    return null;
   }
 }
 

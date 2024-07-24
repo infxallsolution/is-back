@@ -22,7 +22,11 @@ const Module = sequelize.define('modules', {
   state: {
     type: DataTypes.BOOLEAN,
     allowNull: false
-  }
+  },
+  icon: {
+    type: DataTypes.STRING(40),
+    allowNull: true
+  },
 }, {
   tableName: 'modules'
 });
