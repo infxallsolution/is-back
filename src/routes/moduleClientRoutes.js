@@ -44,6 +44,33 @@ router.get('/listbyclient',controller.getModulesByClientController)
 router.get('/get',controller.getController)
 
 
+
+
+/**
+* @swagger
+* /api/moduleclient/activeModules:
+*   get:
+*     summary: Obtiene todos un modulo de un cliente
+*     tags:
+*       - ModuleClient
+*     description: Retorna los modulos de un cliente.
+*     parameters:
+*       - in: query
+*         name: id
+*         description: ID del cliente
+*         required: true
+*         schema:
+*           type: string
+*     responses:
+*       200:
+*         description: Operación exitosa. Devuelve los modulos.
+*       500:
+*         description: Error interno del servidor.
+*/
+router.get('/activeModules',controller.getModulesActiveByClientController)
+router.get('/get',controller.getController)
+
+
 /**
 * @swagger
 * /api/moduleclient/insert:

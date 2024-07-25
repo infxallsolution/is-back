@@ -33,7 +33,7 @@ app.listen(port, () => {
     console.log(`Server is running on port::: ${port}`)
 })
 
-ModuleSeeder.createModules()
+//ModuleSeeder.createModules()
 swaggerConfig(app);
 
 app.use(routes)

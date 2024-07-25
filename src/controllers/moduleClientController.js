@@ -47,6 +47,16 @@ const getModulesByClientController = asyncHandler(async (req, res) => {
 });
 
 
+const getModulesActiveByClientController = asyncHandler(async (req, res) => {
+    if (!req.query.id) {
+        throw "Se necesita el id del cliente";
+    }
+    const id = req.query.id;
+    let dataresult = await service.getModulesActiveByClient(id);
+    return res.status(200).json(dataresult);
+});
+
+
 
 async function deleteController(req, res) {
     if (!req.body.clientId) {
@@ -66,5 +76,6 @@ export default {
     insertController,
     getController,
     getModulesByClientController,
+    getModulesActiveByClientController,
     deleteController
 }
