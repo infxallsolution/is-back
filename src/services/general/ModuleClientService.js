@@ -126,6 +126,15 @@ const getList = async () => {
 
 const insert = async (body) => {
   try {
+    await ModuleClient.update(
+      { state: true },
+      {
+        where: {
+          moduleId: body.moduleId,
+          clientId: body.clientId
+        }
+      }
+    )
     return { message: 'Modulo activado', status: 200 };
   } catch (err) {
     return { message: 'Error en el servidor', status: 500, error: err };
