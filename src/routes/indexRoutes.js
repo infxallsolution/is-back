@@ -6,6 +6,7 @@ import dataRoutes from '../routes/dataRoutes.js';
 import moduleRoutes from '../routes/moduleRoutes.js';
 import moduleClientRoutes from '../routes/moduleClientRoutes.js';
 import redirectionRoutes from '../routes/redirectionRoutes.js';
+import companynRoutes from '../routes/CompanyRoutes.js';
 
 
 const router = express.Router()
@@ -17,6 +18,7 @@ router.use('/api/dashboard', dataDetailRoutes);
 router.use('/api/module', moduleRoutes);
 router.use('/api/moduleclient', moduleClientRoutes);
 router.use('/api/redirection', redirectionRoutes);
+router.use('/api/company', companynRoutes);
 
 export default router
 

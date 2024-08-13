@@ -28,13 +28,18 @@ const login= async(body)=>{
           user:user.username,          
           clientId:user.clientId,          
           type:client.type,          
-          name:client.name
+          name:client.name,          
+          company:user.lastCompany
         },
         JWT_SECRET,
         {
             expiresIn:"2h"
         });
-    return { token, status:200 };
+
+        if(user.lastCompany==null) 
+          user.lastCompany = 1
+
+    return { token, status:200, company:user.lastCompany };
   } catch (error) {
     return { message: 'Error en el servidor', status:500 };
   }
