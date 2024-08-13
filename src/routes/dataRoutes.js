@@ -33,6 +33,7 @@ router.get('/list',controller.listController)
 *         name: id
 *         description: ID del cliente
 *         required: true
+*         default: 23fd6d18-927a-470e-8d71-f2959a174d1
 *         schema:
 *           type: string
 *     responses:

@@ -32,7 +32,12 @@ const User = sequelize.define('users', {
   state: {
     type: DataTypes.BOOLEAN,
     allowNull: false
-  }
+  },  
+  lastCompany: {
+    type: DataTypes.STRING(50),
+    allowNull: false,
+    defaultValue: 1
+  },
 }
 , 
 {

@@ -180,6 +180,8 @@ async function getFechaUltimoRegistro() {
       order: [['xValue', 'DESC']]
     });
 
+    console.log("ultimo registro:"+ultimoRegistro)
+
     return ultimoRegistro ? ultimoRegistro.xValue : null;
   } catch (error) {
     console.error('Error al obtener la fecha del último registro:', error);
