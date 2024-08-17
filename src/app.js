@@ -11,7 +11,7 @@ dotenv.config();
 //import './services/jobs/synchronizeUsers.js'
 
 
-//import './services/jobs/recivedDailyByProduct.js'
+import './services/jobs/recivedDailyByProduct.js'
 //import './services/jobs/productionDailyByProduct.js'
 
 //ojo periodo y anual ya no lo uso, porque lo saco mendiente consultas del diario///

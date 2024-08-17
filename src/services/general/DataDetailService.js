@@ -8,7 +8,7 @@ import { Sequelize } from 'sequelize';
 
 
 ///se debe llamar algo así como dashboar cliente. compuesto por todos los dada del cliente y sus series
-const getDataDetailsByClient = async (clientId, option) => {
+const getDataDetailsByClient = async (clientId, option, company) => {
   try {
     const list = await Data.findAll({
       where: { clientId },
@@ -16,7 +16,7 @@ const getDataDetailsByClient = async (clientId, option) => {
     });
     const arreglo = []
     for (const item of list) {
-      let data = await getListData(item.id, option)
+      let data = await getListData(item.id, option, company)
       arreglo.push({ title: item.name, data });
     }
     return { list: arreglo, status: 200 };
@@ -50,24 +50,24 @@ const getList = async (dataId) => {
 
 
 ///METODO LOCAL QUE SIRVE PARA TRAER LOS DIFERENTES DATA Y OBTENER SU DATADETAIL
-const getListData = async (dataId, option) => {
+const getListData = async (dataId, option, company) => {
   console.log("solocita el dataId:", dataId)
   const data = await Data.findOne({ where: { id: dataId } });
   let products = data.product;
   const list = products.split(',');
   const arreglo = []
   for (const item of list) {
-    console.log("option::::" + option)
+    console.log("company::::" + company)
     if (option == "YEAR") {
-      let dataDetails = await getDataDetailsByDataByYear(dataId, item)
+      let dataDetails = await getDataDetailsByDataByYear(dataId, item,company)
       arreglo.push({ title: item, data: dataDetails });
     }
     else if (option == "MONTH") {
-      let dataDetails = await getDataDetailsByDataByMonth(dataId, item)
+      let dataDetails = await getDataDetailsByDataByMonth(dataId, item,company)
       arreglo.push({ title: item, data: dataDetails });
     }
     else {
-      let dataDetails = await getDataDetailsByData(dataId, item)
+      let dataDetails = await getDataDetailsByData(dataId, item,company)
       arreglo.push({ title: item, data: dataDetails });
     }
 
@@ -76,8 +76,8 @@ const getListData = async (dataId, option) => {
 }
 
 
-///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA
-const getDataDetailsByData = async (dataId, product) => {
+///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA POR DIA
+const getDataDetailsByData = async (dataId, product, company) => {
 
   const fechaUltimoRegistro = await getFechaUltimoRegistro();
 
@@ -90,14 +90,14 @@ const getDataDetailsByData = async (dataId, product) => {
 
   console.log(treintaDiasAtras)
   
-  console.log("ENTRO POR EL DIARIO")
+  console.log("ENTRO POR EL DIARIO:"+company)
   try {
     const list = await DataDetail.findAll({
       attributes: [
         ['xValue', 'time'],
         ['yValue', 'value']
       ],
-      where: { dataId, name: product,xValue: { [Op.between]: [treintaDiasAtras, fechaUltimoRegistro] } },
+      where: { dataId, company, name: product,xValue: { [Op.between]: [treintaDiasAtras, fechaUltimoRegistro] } },
       order: [['xValue', 'ASC']]
     }
     );
@@ -110,7 +110,7 @@ const getDataDetailsByData = async (dataId, product) => {
 
 
 ///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA BY YEAR
-const getDataDetailsByDataByYear = async (dataId, product) => {
+const getDataDetailsByDataByYear = async (dataId, product, company) => {
   // Atributo para mostrar el año: [Sequelize.fn('YEAR', Sequelize.col('xValue')), 'year'],  
   try {
     const list = await DataDetail.findAll({
@@ -118,7 +118,7 @@ const getDataDetailsByDataByYear = async (dataId, product) => {
           [Sequelize.literal("STR_TO_DATE(CONCAT(YEAR(xValue), '-01-01'), '%Y-%m-%d')"), 'time'],
           [Sequelize.fn('SUM', Sequelize.col('yValue')), 'value'],
       ],
-      where: { dataId, name: product},
+      where: { dataId, name: product, company},
       group: [
           Sequelize.fn('YEAR', Sequelize.col('xValue')),
           Sequelize.literal("STR_TO_DATE(CONCAT(YEAR(xValue), '-01-01'), '%Y-%m-%d')")
@@ -138,7 +138,7 @@ const getDataDetailsByDataByYear = async (dataId, product) => {
 
 
 ///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA POR MES
-const getDataDetailsByDataByMonth = async (dataId, product) => {
+const getDataDetailsByDataByMonth = async (dataId, product, company) => {
 
   const fechaUltimoRegistro = await getFechaUltimoRegistro();
 
@@ -156,7 +156,7 @@ const getDataDetailsByDataByMonth = async (dataId, product) => {
           [Sequelize.literal("STR_TO_DATE(CONCAT(YEAR(xValue), '-', LPAD(MONTH(xValue), 2, '0'), '-01'), '%Y-%m-%d')"), 'time'],
           [Sequelize.fn('SUM', Sequelize.col('yValue')), 'value'],
       ],
-      where: { dataId, name: product,xValue: { [Op.between]: [unAnioAtras, fechaUltimoRegistro] } },
+      where: { dataId, company, name: product,xValue: { [Op.between]: [unAnioAtras, fechaUltimoRegistro] } },
       group: [
           Sequelize.fn('YEAR', Sequelize.col('xValue')),
           Sequelize.fn('MONTH', Sequelize.col('xValue')),

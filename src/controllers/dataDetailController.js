@@ -17,28 +17,25 @@ async function listController(req, res) {
 
 
 async function listByClient(req, res) {
+
     if (!req.params.id) {
         return res.status(400).json({ message: "se necesita el id del cliente" });
     }  
     if (!req.query.option) {
         return res.status(400).json({ message: "se necesita el option" });
+    } 
+    if (!req.query.company) {
+        return res.status(400).json({ message: "se necesita la compañia" });
     }   
-    let dataresult = await dataDetailService.getDataDetailsByClient(req.params.id,req.query.option);
-    return res.status(dataresult.status).json(dataresult.list);
-}
-
-
-async function listByClientDate(req, res) {
-    if (!req.params.id) {
-        return res.status(400).json({ message: "se necesita el id del cliente" });
-    }   
-    let dataresult = await dataDetailService.getDataDetailsByClientDate(req.params.id);
+    let clientId = req.params.id;
+    let option = req.query.option;
+    let company = req.query.company;
+    let dataresult = await dataDetailService.getDataDetailsByClient(clientId,option,company);
     return res.status(dataresult.status).json(dataresult.list);
 }
 
 
 export default {
     listController,
-    listByClient,
-    listByClientDate
+    listByClient
 }
