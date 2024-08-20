@@ -19,7 +19,7 @@ const router = express.Router()
 *         default: Administracion
 *         schema:
 *           type: string
-*       - in: path
+*       - in: query
 *         name: company
 *         description: Empresa
 *         required: true
