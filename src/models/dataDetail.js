@@ -23,6 +23,10 @@ const DataDetails = sequelize.define('dataDetails', {
   yValue: {
     type: DataTypes.DOUBLE,
     allowNull: false
+  },
+    company: {
+    type: DataTypes.INTEGER,
+    allowNull: true
   }
 }, {
   tableName: 'dataDetails'
