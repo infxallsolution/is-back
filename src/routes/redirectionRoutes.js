@@ -19,6 +19,13 @@ const router = express.Router()
 *         default: Administracion
 *         schema:
 *           type: string
+*       - in: path
+*         name: company
+*         description: Empresa
+*         required: true
+*         default: 1
+*         schema:
+*           type: string
 *     responses:
 *       200:
 *         description: Operación exitosa. regresa la url del módulo con su respectivo token
