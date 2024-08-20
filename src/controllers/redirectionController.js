@@ -15,12 +15,12 @@ async function redirectToModuleController(req, res) {
         return res.status(400).json({ message: "se necesita el modulo" });
     }
 
-    if (!req.params.company) {
+    if (!req.query.company) {
         return res.status(400).json({ message: "se necesita la company" });
     }
 
     let module = req.params.module
-    let company = req.params.company
+    let company = req.query.company
     let clientId = req.user.clientId
     let name = req.user.name
     let token = req.token
