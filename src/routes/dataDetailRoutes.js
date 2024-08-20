@@ -4,7 +4,7 @@ const router = express.Router()
 
 /**
 * @swagger
-* /api/dashboard/list/{id}:
+* /api/dashboard/datadetailsbydata/{id}:
 *   get:
 *     summary: Obtiene el datadetail de un data especifico, mediante el dataId
 *     tags:
@@ -13,8 +13,16 @@ const router = express.Router()
 *     parameters:
 *       - in: path
 *         name: id
-*         description: ID de la data
+*         description: ID del cliente
 *         required: true
+*         default: c4ebd95d-66c5-4625-bb8d-d2fb01521f42
+*         schema:
+*           type: string
+*       - in: query
+*         name: company
+*         description: company
+*         required: true
+*         default: 1
 *         schema:
 *           type: string
 *     responses:
@@ -23,7 +31,7 @@ const router = express.Router()
 *       500:
 *         description: Error interno del servidor.
 */
-router.get('/list/:id',controller.listController)
+router.get('/datadetailsbydata/:id',controller.dataDetailsByDataController)
 
 
 /**
@@ -53,6 +61,7 @@ router.get('/list/:id',controller.listController)
 *         name: company
 *         description: company
 *         required: true
+*         default: 1
 *         schema:
 *           type: string
 *     responses:

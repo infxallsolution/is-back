@@ -5,11 +5,16 @@ import asyncHandler from "express-async-handler";
 import dataDetailService from "../services/general/DataDetailService.js";
 
 
-async function listController(req, res) {
+async function dataDetailsByDataController(req, res) {
+    console.log(req.params.id)
+    console.log(req.query.company)
     if (!req.params.id) {
         return res.status(400).json({ message: "se necesita el id de la data" });
+    }  
+    if (!req.query.company) {
+        return res.status(400).json({ message: "se necesita la comañia" });
     }   
-    let dataresult = await dataDetailService.getList(req.params.id);
+    let dataresult = await dataDetailService.dataDetailsByData(req.params.id,req.query.company);
     return res.status(dataresult.status).json(dataresult.list);
 }
 
@@ -17,6 +22,8 @@ async function listController(req, res) {
 
 
 async function listByClient(req, res) {
+
+    console.log(req.query)
 
     if (!req.params.id) {
         return res.status(400).json({ message: "se necesita el id del cliente" });
@@ -36,6 +43,6 @@ async function listByClient(req, res) {
 
 
 export default {
-    listController,
+    dataDetailsByDataController,
     listByClient
 }

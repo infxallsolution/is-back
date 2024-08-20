@@ -29,15 +29,15 @@ const getDataDetailsByClient = async (clientId, option, company) => {
 
 
 
-
-const getList = async (dataId) => {
+///ESTE NO INTERESA ACTUALMENTE
+const dataDetailsByData = async (dataId,company) => {
   console.log("solocita el dataId:", dataId)
   const data = await Data.findOne({ where: { id: dataId } });
   let products = data.product;
   const list = products.split(',');
   const arreglo = []
   for (const item of list) {
-    let dataDetails = await getDataDetailsByDataByYear(dataId, item)
+    let dataDetails = await getDataDetailsByDataByYear(dataId, item,company)
     arreglo.push({ title: item, data: dataDetails });
   }
   return { list: arreglo, status: 200 };
@@ -79,7 +79,12 @@ const getListData = async (dataId, option, company) => {
 ///METODO LOCAL QUE RETORNA EL DATADETAIL POR CADA DATA POR DIA
 const getDataDetailsByData = async (dataId, product, company) => {
 
+  console.log("revisa el ultimo registro")
   const fechaUltimoRegistro = await getFechaUltimoRegistro();
+  
+  console.log("el ultimo registro:"+fechaUltimoRegistro)
+
+
 
   if (!fechaUltimoRegistro) {
     console.log('No se encontró ningún registro.');
@@ -192,6 +197,6 @@ async function getFechaUltimoRegistro() {
 
 
 export default {
-  getList,
+  dataDetailsByData,
   getDataDetailsByClient
 };

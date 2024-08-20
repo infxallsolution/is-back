@@ -15,21 +15,18 @@ const clientId = process.env.ID_CLIENT
 const urlService = process.env.URL_SERVICE
 
 
-cron.schedule('* * * * *', async () => {
+cron.schedule('*/15 * * * *', async () => {
 
   try {
     //const datas = await Data.findAll({ where: { clientId } });
     const client = await Client.findOne( { where : {id:clientId}}); 
-    const companies = await Company.findAll({ where: { clientId } });
-    
+    const companies = await Company.findAll({ where: { clientId } }); 
 
-
-    ///Recorro el listado de series que tiene un usuario asignado
-    
+    ///Recorro el listado de series que tiene un usuario asignado    
       let dataId = "c4ebd95d-66c5-4625-bb8d-d2fb01521f43"
       let endpoint = "get-production-daily-by-product"
       let product = "CPO"
-      let year = "2024"
+      let year = process.env.YEAR
 
       
     for(const company of companies){

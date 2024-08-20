@@ -3,6 +3,7 @@ import axios from 'axios';
 import dotenv from 'dotenv'
 import Client from '../../models/client.js'
 import Data from '../../models/data.js'
+import Company from '../../models/company.js'
 import DataDetail from '../../models/dataDetail.js'
 import { v4 as uuidv4 } from 'uuid';
 
@@ -14,7 +15,7 @@ const clientId = process.env.ID_CLIENT
 const urlService = process.env.URL_SERVICE
 
 
-cron.schedule('*/30 * * * *', async () => {
+cron.schedule('*/15 * * * *', async () => {
 
   try {
     //const datas = await Data.findAll({ where: { clientId } });
@@ -25,8 +26,9 @@ cron.schedule('*/30 * * * *', async () => {
     let dataId = "c4ebd95d-66c5-4625-bb8d-d2fb01521f42"
     let endpoint = "get-recived-daily-by-product"
     let product = "FRU"
-    let year = "2024"
+    let year = process.env.YEAR
 
+    console.log(companies)
       
     for(const company of companies){
       console.log("#########################")      
