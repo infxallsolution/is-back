@@ -25,7 +25,16 @@ const app = express();
 app.use(express.json({limit: '50mb'}));
 
 
-app.use(cors())
+
+app.use(cors({
+    origin: 'https://planos.infxsolution.com/', // Reemplaza con el dominio del front-end
+    methods: ['GET', 'POST'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'], // Encabezados permitidos
+  }));
+
+
+
+
 conectDb()
 app.listen(port, () => {
     //cambio el message running
