@@ -22,20 +22,8 @@ const port = process.env.PORT || 7000;
 
 const app = express();
 
-app.use(express.json({limit: '50mb'}));
-
-
-let allowCors = function(req, res, next) {
-    res.header('Access-Control-Allow-Origin', "https://planos.infxsolution.com/");
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-    res.header('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-}
-
-
-app.use(allowCors);
-
-
+app.use(express.json({ limit: '50mb' }))
+app.use(cors())
 
 
 conectDb()
