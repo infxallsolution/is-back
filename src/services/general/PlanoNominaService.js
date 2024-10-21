@@ -1,14 +1,16 @@
 import xlsx from 'xlsx';
 import fs from 'fs';
 import CellOperations from '../../utils/CellOperations.js';
+import RecordService from './RecordService.js';
 import { promises as fsp } from 'fs'; // Importamos fs.promises
 
 
 
-const generateFile = async (body) => {
+const generateFile = async (body, res) => {
 
     const fileNameExcel = body.file
     let fecha = CellOperations.formatDateCompact(body.fecha)
+    console.log("fecha_formateada:", fecha)
     let numeroDocumento = body.numero
     let notas = body.notas
     let company = body.company
@@ -16,15 +18,17 @@ const generateFile = async (body) => {
 
     let messageLog = ""
     let success = true;
-    const ColumNum = 13
+    const ColumNum = 6
 
 
     console.log("ingreso a nomina")
     const filePath = `./files/${fileNameExcel}`;
-    const outputFileLog = `./files/log_${fileNameExcel}`;
-    const plainName = fileNameExcel.replace(".xlsx", '.txt')
+    const FileNameLog = `log_${fileNameExcel}`;
+    const outputFileLog = `./files/${FileNameLog}`;
+    const documentId = fileNameExcel.replace(".xlsx", '')
+    const fileNamePlain = fileNameExcel.replace(".xlsx", '.txt')
     //console.log(filePath)
-    const outputFile = './files/' + plainName;
+    const outputFile = './files/' + fileNamePlain;
 
     console.log("ingreso a nomina 2")
 
@@ -94,32 +98,35 @@ const generateFile = async (body) => {
             rowData.push(numeroDocumento);
 
             ///CUENTA///
-            let cellAddress = xlsx.utils.encode_cell({ c: 4, r: rowNum });
+            let cellAddress = xlsx.utils.encode_cell({ c: 1, r: rowNum });
             let cell = sheet[cellAddress];
             let cuenta = cell.v
-            messageLog = CellOperations.validateLength(cuenta, 20, "cuenta", messageLog, "E")
+            cuenta = CellOperations.removeSpecialCharacters(cuenta)
+            messageLog = CellOperations.validateLength(cuenta, 20, "cuenta", messageLog, "B")
             cuenta = CellOperations.addCcharacterToTheRight(cuenta, 20, ' ')
             rowData.push(cuenta);
 
             ///TERCERO///
-            cellAddress = xlsx.utils.encode_cell({ c: 3, r: rowNum });
+            cellAddress = xlsx.utils.encode_cell({ c: 0, r: rowNum });
             cell = sheet[cellAddress];
             tercero = cell.v
-            messageLog = CellOperations.validateLength(tercero, 20, "tercero", messageLog, "D")
+            tercero = CellOperations.removeSpecialCharacters(tercero)
+            messageLog = CellOperations.validateLength(tercero, 20, "tercero", messageLog, "A")
             tercero = CellOperations.addCcharacterToTheRight(tercero, 15, ' ')
             rowData.push(tercero);
 
             ///CENTRO OPERACIONES MOVIMIENTO///
-            cellAddress = xlsx.utils.encode_cell({ c: 8, r: rowNum });
+            cellAddress = xlsx.utils.encode_cell({ c: 2, r: rowNum });
             cell = sheet[cellAddress];
             let centroOperaciones = cell.v
-            let centroOperacionMovimieno = '030'
+            let centroOperacionMovimiento = '030'
             if (centroOperaciones != '0') {
-                centroOperacionMovimieno = centroOperaciones
+                centroOperacionMovimiento = centroOperaciones
             }
-            messageLog = CellOperations.validateLength(centroOperacionMovimieno, 3, "Centro", messageLog, "I")
-            centroOperacionMovimieno = CellOperations.addCcharacterToTheLeft(centroOperacionMovimieno, 3, '0')
-            rowData.push(centroOperacionMovimieno);
+            centroOperacionMovimiento = CellOperations.removeSpecialCharacters(centroOperacionMovimiento)
+            messageLog = CellOperations.validateLength(centroOperacionMovimiento, 3, "Centro", messageLog, "C")
+            centroOperacionMovimiento = CellOperations.addCcharacterToTheLeft(centroOperacionMovimiento, 3, '0')
+            rowData.push(centroOperacionMovimiento);
 
             ///DATOS POR DEFECTO///
             let codigoUnidadNegocio = CellOperations.addCcharacterToTheRight('01', 20, ' ')
@@ -131,16 +138,16 @@ const generateFile = async (body) => {
 
 
 
-            cellAddress = xlsx.utils.encode_cell({ c: 10, r: rowNum });
+            cellAddress = xlsx.utils.encode_cell({ c: 4, r: rowNum });
             cell = sheet[cellAddress];
             let tipoMov = cell.v
 
 
-            cellAddress = xlsx.utils.encode_cell({ c: 11, r: rowNum });
+            cellAddress = xlsx.utils.encode_cell({ c: 5, r: rowNum });
             cell = sheet[cellAddress];
             let valor = cell.v
-            messageLog = CellOperations.isNumber(valor, "Valor", messageLog, "L")
-            messageLog = CellOperations.validateLength(valor, 20, "Valor", messageLog, "L")
+            messageLog = CellOperations.isNumber(valor, "Valor", messageLog, "F")
+            messageLog = CellOperations.validateLength(valor, 20, "Valor", messageLog, "F")
 
             if (tipoMov == 'D') {
                 valor = CellOperations.addDecimalPart(valor)
@@ -168,36 +175,35 @@ const generateFile = async (body) => {
             rowData.push(numDocBanco);
 
 
-            cellAddress = xlsx.utils.encode_cell({ c: 9, r: rowNum });
+            cellAddress = xlsx.utils.encode_cell({ c: 3, r: rowNum });
             cell = sheet[cellAddress];
             let detalle = cell.v
-            messageLog = CellOperations.validateLength(detalle, 255, "Detalle", messageLog, "J")
+            detalle = CellOperations.removeSpecialCharacters(detalle)
+            messageLog = CellOperations.validateLength(detalle, 255, "Detalle", messageLog, "D")
             detalle = CellOperations.addCcharacterToTheRight(detalle, 255, ' ')
             rowData.push(detalle);
 
-
-
-            fileContent += rowData.join('') + '\n'; // Cada fila será una línea en el archivo de texto
-            //console.log(`Fila ${rowNum + 1}:`, rowData);
-
-
-
-            try {
-                const logCellAddress = xlsx.utils.encode_cell({ c: ColumNum, r: rowNum });
-                let cellLog = sheet[logCellAddress];
-                if (cellLog) {
-                    console.log("se modifica el valor")
-                    const nuevoValor = `${cellLog.v} - ${messageLog}`;
-                    sheet[logCellAddress].v = nuevoValor;
-                    messageLog = ""
-                } else {
-                    console.log("es una nueva columna")
-                    sheet[logCellAddress] = { v: messageLog };
-                    messageLog = ""
+            fileContent += rowData.join('') + '\n';  
+            if (messageLog != "") {
+                success = false;
+                try {
+                    const logCellAddress = xlsx.utils.encode_cell({ c: ColumNum, r: rowNum });
+                    let cellLog = sheet[logCellAddress];
+                    if (cellLog) {
+                        const nuevoValor = `${cellLog.v} - ${messageLog}`;
+                        sheet[logCellAddress].v = nuevoValor;
+                        messageLog = ""
+                    } else {
+                        sheet[logCellAddress] = { v: messageLog };
+                        messageLog = ""
+                    }
+                }
+                catch (err) {
+                    //console.log("ERROR EDITANDO", err)
                 }
             }
-            catch (err) {
-                console.log("ERROR EDITANDO", err)
+            else {
+                //console.log("linea sin errores")
             }
 
             counterRows++;
@@ -208,20 +214,30 @@ const generateFile = async (body) => {
         let ultimoRegistro = `${numeroDeRegistro}${tipoDeRegistro}${subTipoDeRegistro}${versionRegistro}${company}`
         fileContent += ultimoRegistro + '\n';
 
-        xlsx.writeFile(workbook, outputFileLog);
-
-        try {
-            await fsp.writeFile(outputFile, fileContent);
-            console.log('Archivo de texto creado con éxito:', outputFile);
-        } catch (err) {
-            console.error('Error al escribir el archivo:', err);
+        if (success) {
+            console.log("fue exitoso")
+            try {
+                await fsp.writeFile(outputFile, fileContent);
+                return { message: 'Exitoso', status: 200, error: null , success:true, filename: fileNamePlain };
+            } catch (err) {
+                console.log("error exitoso")
+                return { message: 'Error en el servidor', status: 500, error: err, success:false, filename: null };
+            }
         }
+        else {
+            console.log("general el log")
+            await xlsx.writeFile(workbook, outputFileLog);
+            return { message: 'log creado', status: 200, error: null , success:false, filename: FileNameLog };
+        }
+
+
 
 
 
 
     } else {
         console.error('El archivo no existe.');
+        return { message: 'no existe el archivo', status: 404, error: err , success:false };
     }
 }
 

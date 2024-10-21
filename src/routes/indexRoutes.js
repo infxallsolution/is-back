@@ -8,6 +8,7 @@ import moduleClientRoutes from '../routes/moduleClientRoutes.js';
 import redirectionRoutes from '../routes/redirectionRoutes.js';
 import companynRoutes from '../routes/CompanyRoutes.js';
 import plainRoutes from '../routes/plainRoutes.js';
+import recordRoutes from '../routes/recordRoutes.js';
 
 
 const router = express.Router()
@@ -21,6 +22,7 @@ router.use('/api/moduleclient', moduleClientRoutes);
 router.use('/api/redirection', redirectionRoutes);
 router.use('/api/company', companynRoutes);
 router.use('/api/plain', plainRoutes);
+router.use('/api/record', recordRoutes);
 
 export default router
 

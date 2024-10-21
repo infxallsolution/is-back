@@ -8,11 +8,12 @@ import planoSalidaService from './PlanoSalidaInsumosService.js';
 
 
 
-const generatePlainNomina = async (body) => {
+const generatePlainNomina = async (body,res) => {
   try {
     console.log("plain services nomina")
     console.log(body)
-    await planoNominaService.generateFile(body)
+    const resultado = await planoNominaService.generateFile(body)
+    return resultado
   } catch (err) {
     return { message: 'Error en el servidor', status: 500, error: err };
   }
@@ -24,7 +25,8 @@ const generatePlainSalida = async (body) => {
   try {
     console.log("plain services salida")
     console.log(body)
-    await planoSalidaService.generateFile(body)
+    const resultado = await planoSalidaService.generateFile(body)
+    return resultado
   } catch (err) {
     return { message: 'Error en el servidor', status: 500, error: err };
   }

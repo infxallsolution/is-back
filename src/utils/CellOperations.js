@@ -27,8 +27,6 @@ function addDecimalPart(value) {
         return value + ".0000";
     else {
         let longitud = vec[1].length
-        console.log(longitud)
-
         if (longitud == 0)
             return value + ".0000";
         else if (longitud == 1)
@@ -76,13 +74,13 @@ function validateLength(value, quantity, fieldName, messageLog, letter) {
 
 function isNumber(value, fieldName, messageLog, letter) {   
         if (typeof value === 'number' && isFinite(value)) {
+           return messageLog
+        }
+        else {
             if (messageLog == "")
                 return `${letter}) ${fieldName} debe ser numero`
             else
                 return `${messageLog} - ${letter}) ${fieldName} debe ser numero`
-        }
-        else {
-            return messageLog
         }
 }
 
@@ -93,8 +91,17 @@ function formatDateCompact(fechaISO) {
     const month = String(fecha.getUTCMonth() + 1).padStart(2, '0'); // Los meses en JavaScript empiezan desde 0
     const day = String(fecha.getUTCDate()).padStart(2, '0');
     const fechaCompacta = `${year}${month}${day}`;
-    console.log(fechaCompacta);
+    return fechaCompacta
 }
+
+function removeSpecialCharacters(texto) {
+    texto = String(texto)
+    texto =  texto.replace(/[^a-zA-Z0-9 ]/g, '');
+    return texto
+
+
+}
+
 
 
 
@@ -107,5 +114,6 @@ export default {
     addPlus,
     validateLength,
     formatDateCompact,
-    isNumber
+    isNumber,
+    removeSpecialCharacters
 }
