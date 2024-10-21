@@ -63,9 +63,9 @@ function validateLength(value, quantity, fieldName, messageLog, letter) {
     let longitud = value.length
     if (longitud > quantity) {
         if (messageLog == "")
-            return `${letter}) ${fieldName} Largo`
+            return `${letter}) ${fieldName} - Longitud`
         else
-            return `${messageLog} - ${letter}) ${fieldName} Largo`
+            return `${messageLog} - ${letter}) ${fieldName} - Longitud`
     }
     else {
         return messageLog
@@ -78,9 +78,9 @@ function isNumber(value, fieldName, messageLog, letter) {
         }
         else {
             if (messageLog == "")
-                return `${letter}) ${fieldName} debe ser numero`
+                return `${letter}) ${fieldName} - Numerico`
             else
-                return `${messageLog} - ${letter}) ${fieldName} debe ser numero`
+                return `${messageLog} - ${letter}) ${fieldName} - Numerico`
         }
 }
 
