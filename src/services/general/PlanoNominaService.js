@@ -3,6 +3,7 @@ import fs from 'fs';
 import CellOperations from '../../utils/CellOperations.js';
 import RecordService from './RecordService.js';
 import { promises as fsp } from 'fs'; // Importamos fs.promises
+import account from '../../files/accounts.js';
 
 
 
@@ -165,6 +166,13 @@ const generateFile = async (body, res) => {
             if(company=="003") centroOperacionMovimiento = '031'
             if(company=="004") centroOperacionMovimiento = '029'
 
+            // Verificar si la cuenta maneja centro de costo (solo para company 002)
+            let manejaCentroCosto = false;
+            if (company === "002") {
+                const cuentaLimpia = cuenta.trim();
+                const accountFound = account.find(acc => acc.codigo === cuentaLimpia);
+                manejaCentroCosto = accountFound ? accountFound.manejaCentroCosto : false;
+            }
 
             //ojo si no funciiona solo con colocarlo aca, lo dejo afuera
             if (centroOperaciones == '0') {
@@ -184,6 +192,12 @@ const generateFile = async (body, res) => {
             ///DATOS POR DEFECTO///
             let codigoUnidadNegocio = CellOperations.addCcharacterToTheRight('01', 20, ' ')
             let codigoCentroCosto = CellOperations.characterGenerator(15, ' ')
+            
+            // Si es company 002 y la cuenta maneja centro de costo, usar 'generico'
+            if (company === "002" && manejaCentroCosto) {
+                codigoCentroCosto = CellOperations.addCcharacterToTheRight('generico', 15, ' ')
+            }
+            
             let codigoConceptoFlujo = CellOperations.characterGenerator(10, ' ')
             rowData.push(codigoUnidadNegocio);
             rowData.push(codigoCentroCosto);
