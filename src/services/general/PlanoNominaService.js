@@ -172,6 +172,7 @@ const generateFile = async (body, res) => {
                 const cuentaLimpia = cuenta.trim();
                 const accountFound = account.find(acc => acc.codigo === cuentaLimpia);
                 manejaCentroCosto = accountFound ? accountFound.manejaCentroCosto : false;
+                console.log("cuenta:", cuentaLimpia, "manejaCentroCosto:", manejaCentroCosto);
             }
 
             //ojo si no funciiona solo con colocarlo aca, lo dejo afuera
@@ -195,7 +196,9 @@ const generateFile = async (body, res) => {
             
             // Si es company 002 y la cuenta maneja centro de costo, usar 'generico'
             if (company === "002" && manejaCentroCosto) {
+                console.log("la cuenta maneja centro de costo, se pone generico")
                 codigoCentroCosto = CellOperations.addCcharacterToTheRight('generico', 15, ' ')
+                console.log("codigoCentroCosto:", codigoCentroCosto)
             }
             
             let codigoConceptoFlujo = CellOperations.characterGenerator(10, ' ')

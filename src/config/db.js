@@ -15,6 +15,7 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 })
 
 const conectDb = () => {
+  console.log('Connecting to database...', sequelize.config);
   sequelize.authenticate().then(() => {
     console.log("Connection has been established successfully.");
   }).catch((err) => {
