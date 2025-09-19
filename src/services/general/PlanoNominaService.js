@@ -3,7 +3,7 @@ import fs from 'fs';
 import CellOperations from '../../utils/CellOperations.js';
 import RecordService from './RecordService.js';
 import { promises as fsp } from 'fs'; // Importamos fs.promises
-import account from '../../parameters/accountparameters.js';
+import account from './../../../parameters/accountparameters.js';
 
 
 
@@ -170,9 +170,10 @@ const generateFile = async (body, res) => {
             let manejaCentroCosto = false;
             if (company === "002") {
                 const cuentaLimpia = cuenta.trim();
+                console.log("Buscando cuenta:", cuentaLimpia, "en array de", account.length, "cuentas");
                 const accountFound = account.find(acc => acc.codigo === cuentaLimpia);
                 manejaCentroCosto = accountFound ? accountFound.manejaCentroCosto : false;
-                console.log("cuenta:", cuentaLimpia, "manejaCentroCosto:", manejaCentroCosto);
+                console.log("cuenta:", cuentaLimpia, "accountFound:", accountFound, "manejaCentroCosto:", manejaCentroCosto);
             }
 
             //ojo si no funciiona solo con colocarlo aca, lo dejo afuera
