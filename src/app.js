@@ -5,6 +5,7 @@ import conectDb from './config/db.js'
 import swaggerConfig  from './config/swaggerConfig.js';
 import routes from './routes/indexRoutes.js'
 import ModuleSeeder from './seeders/ModuleSeeder.js';
+import AgronirvanaSeeder from './seeders/AgronirvanaSeeder.js';
 dotenv.config();
 
 ///ejecuto los jobs de sincronización ///
@@ -34,6 +35,7 @@ app.listen(port, () => {
 })
 
 //ModuleSeeder.createModules()
+AgronirvanaSeeder.createAgronirvana()
 swaggerConfig(app);
 
 app.use(routes)

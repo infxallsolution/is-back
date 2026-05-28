@@ -84,12 +84,14 @@ const generateFile = async (body, res) => {
         ///002 LA VICTORIE
         ///003 AGRICULA GARABULLA
         ///004 BANACLAIRE
+        ///006 AGRONIRVANA SAS
 
 
         if(company=="001") centroOperacion = '030'
         if(company=="002") centroOperacion = '011'
         if(company=="003") centroOperacion = '031'
         if(company=="004") centroOperacion = '029'
+        if(company=="006") centroOperacion = '068'
 
 
 
@@ -126,6 +128,7 @@ const generateFile = async (body, res) => {
             if(company=="002") centroOperacionDocumento = '011'
             if(company=="003") centroOperacionDocumento = '031'
             if(company=="004") centroOperacionDocumento = '029'
+            if(company=="006") centroOperacionDocumento = '068'
     
 
             rowData.push(numeroDeRegistro);
@@ -165,6 +168,7 @@ const generateFile = async (body, res) => {
             if(company=="002") centroOperacionMovimiento = '011'
             if(company=="003") centroOperacionMovimiento = '031'
             if(company=="004") centroOperacionMovimiento = '029'
+            if(company=="006") centroOperacionMovimiento = '068'
 
             // Verificar si la cuenta maneja centro de costo (solo para company 002)
             let manejaCentroCosto = false;
@@ -182,6 +186,7 @@ const generateFile = async (body, res) => {
                  else if(company=="002") centroOperacionMovimiento = '001'
                  else if(company=="003") centroOperacionMovimiento = '031'
                  else if(company=="004") centroOperacionMovimiento = '029'
+                 else if(company=="006") centroOperacionMovimiento = '068'
             }
             else{
                 centroOperacionMovimiento = centroOperaciones
