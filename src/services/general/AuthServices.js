@@ -13,6 +13,9 @@ const login= async(body)=>{
     const username = body.username;   
     const password = body.password;   
     const client = await Client.findOne({ where: { identification } });
+    if (!client) {
+      return { message: 'Cliente no encontrado', status: 404 };
+    }
 
     const user = await User.findOne({ where: { username,clientId:client.id } });
     if (!user) {
