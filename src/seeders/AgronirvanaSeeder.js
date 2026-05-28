@@ -9,11 +9,11 @@ import ModuleClient from '../models/moduleClient.js';
 async function createAgronirvana() {
   try {
     // 1. Crear cliente
-    let client = await Client.findOne({ where: { identification: '901776097' } });
+    let client = await Client.findOne({ where: { identification: '006' } });
     if (!client) {
       client = await Client.create({
         id: uuidv4(),
-        identification: '901776097',
+        identification: '006',
         name: 'Agronirvana SAS',
         type: 'BANANO',
         state: true,
