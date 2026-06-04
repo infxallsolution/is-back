@@ -6,6 +6,32 @@ import { promises as fsp } from 'fs'; // Importamos fs.promises
 import account from '../../files/accounts.js';
 import { normalizeCentroOperacionMovimiento } from './helpers/centroOperacionHelper.js';
 
+const CENTRO_OPERACION_POR_COMPANY = {
+    '001': '030',
+    '002': '011',
+    '003': '031',
+    '004': '029',
+    '006': '068',
+};
+
+const normalizeAccountCode = (value) => String(value ?? '').trim().replace(/[^0-9A-Za-z]/g, '');
+
+const accountIndex = new Map(
+    account.map((item) => [normalizeAccountCode(item.codigo), item])
+);
+
+const getCentroOperacionPorCompany = (companyCode) => CENTRO_OPERACION_POR_COMPANY[companyCode] ?? '030';
+
+const resolveCentroOperacionMovimiento = (companyCode, centroOperaciones) => {
+    const centroNormalizado = String(centroOperaciones ?? '').trim();
+
+    if (centroNormalizado === '' || centroNormalizado === '0') {
+        return getCentroOperacionPorCompany(companyCode);
+    }
+
+    return centroOperaciones;
+};
+
 
 
 const generateFile = async (body, res) => {
@@ -164,37 +190,16 @@ const generateFile = async (body, res) => {
             cellAddress = xlsx.utils.encode_cell({ c: col_centro_costo, r: rowNum });
             cell = sheet[cellAddress];
             let centroOperaciones = cell.v
-            let centroOperacionMovimiento = '030'
-            
-            if(company=="001") centroOperacionMovimiento = '030'
-            if(company=="002") centroOperacionMovimiento = '011'
-            if(company=="003") centroOperacionMovimiento = '031'
-            if(company=="004") centroOperacionMovimiento = '029'
-            if(company=="006") centroOperacionMovimiento = '068'
 
-            // Verificar si la cuenta maneja centro de costo (solo para company 002)
-            let manejaCentroCosto = false;
-            if (normalizedCompany === "002") {
-                const cuentaLimpia = cuenta.trim();
-                console.log("Buscando cuenta:", cuentaLimpia, "en array de", account.length, "cuentas");
-                const accountFound = account.find(acc => acc.codigo === cuentaLimpia);
-                manejaCentroCosto = Boolean(accountFound?.manejaCentroCosto);
-                console.log("cuenta:", cuentaLimpia, "accountFound:", accountFound, "manejaCentroCosto:", manejaCentroCosto);
-            }
+            const cuentaLimpia = normalizeAccountCode(cuenta);
+            const accountFound = normalizedCompany === "002"
+                ? accountIndex.get(cuentaLimpia)
+                : undefined;
+            const manejaCentroCosto = Boolean(accountFound?.manejaCentroCosto);
 
-            //ojo si no funciiona solo con colocarlo aca, lo dejo afuera
-            if (centroOperaciones == '0') {
-                 if(company=="001") centroOperacionMovimiento = '030'
-                 else if(company=="002") centroOperacionMovimiento = '001'
-                 else if(company=="003") centroOperacionMovimiento = '031'
-                 else if(company=="004") centroOperacionMovimiento = '029'
-                 else if(company=="006") centroOperacionMovimiento = '068'
-            }
-            else{
-                centroOperacionMovimiento = centroOperaciones
-            }
+            let centroOperacionMovimiento = resolveCentroOperacionMovimiento(normalizedCompany, centroOperaciones);
             centroOperacionMovimiento = CellOperations.removeSpecialCharacters(centroOperacionMovimiento)
-            centroOperacionMovimiento = normalizeCentroOperacionMovimiento(company, centroOperacionMovimiento)
+            centroOperacionMovimiento = normalizeCentroOperacionMovimiento(normalizedCompany, centroOperacionMovimiento)
             messageLog = CellOperations.validateLength(centroOperacionMovimiento, 3, "Centro", messageLog, col_centro_costo_letter)
             centroOperacionMovimiento = CellOperations.addCcharacterToTheLeft(centroOperacionMovimiento, 3, '0')
             rowData.push(centroOperacionMovimiento);
@@ -205,9 +210,7 @@ const generateFile = async (body, res) => {
             
             // Si es company 002 y la cuenta maneja centro de costo, usar 'generico'
             if (normalizedCompany === "002" && manejaCentroCosto) {
-                console.log("la cuenta maneja centro de costo, se pone generico")
                 codigoCentroCosto = CellOperations.addCcharacterToTheRight('generico', 15, ' ')
-                console.log("codigoCentroCosto:", codigoCentroCosto)
             }
             
             let codigoConceptoFlujo = CellOperations.characterGenerator(10, ' ')
