@@ -3,6 +3,7 @@ import fs from 'fs';
 import CellOperations from '../../utils/CellOperations.js';
 import RecordService from './RecordService.js';
 import { promises as fsp } from 'fs'; // Importamos fs.promises
+import { normalizeCentroOperacionMovimiento } from './helpers/centroOperacionHelper.js';
 
 
 
@@ -124,6 +125,7 @@ const generateFile = async (body) => {
                 centroOperacionMovimieno = cellCentroCosto
             }
             centroOperacionMovimieno = CellOperations.removeSpecialCharacters(centroOperacionMovimieno)
+            centroOperacionMovimieno = normalizeCentroOperacionMovimiento(company, centroOperacionMovimieno)
             messageLog = CellOperations.validateLength(centroOperacionMovimieno, 3, "Centro", messageLog, "B")
             centroOperacionMovimieno = CellOperations.addCcharacterToTheLeft(centroOperacionMovimieno, 3, '0')
             rowData.push(centroOperacionMovimieno);
