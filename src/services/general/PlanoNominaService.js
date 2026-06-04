@@ -35,6 +35,7 @@ const generateFile = async (body, res) => {
     let notas = body.notas
     let company = body.company
     let tipoDocumento = body.type
+    const normalizedCompany = String(company ?? '').padStart(3, '0')
 
     let notes= notas
     let messageLog = ""
@@ -173,11 +174,11 @@ const generateFile = async (body, res) => {
 
             // Verificar si la cuenta maneja centro de costo (solo para company 002)
             let manejaCentroCosto = false;
-            if (company === "002") {
+            if (normalizedCompany === "002") {
                 const cuentaLimpia = cuenta.trim();
                 console.log("Buscando cuenta:", cuentaLimpia, "en array de", account.length, "cuentas");
                 const accountFound = account.find(acc => acc.codigo === cuentaLimpia);
-                manejaCentroCosto = accountFound ? accountFound.manejaCentroCosto : false;
+                manejaCentroCosto = Boolean(accountFound?.manejaCentroCosto);
                 console.log("cuenta:", cuentaLimpia, "accountFound:", accountFound, "manejaCentroCosto:", manejaCentroCosto);
             }
 
@@ -203,7 +204,7 @@ const generateFile = async (body, res) => {
             let codigoCentroCosto = CellOperations.characterGenerator(15, ' ')
             
             // Si es company 002 y la cuenta maneja centro de costo, usar 'generico'
-            if (company === "002" && manejaCentroCosto) {
+            if (normalizedCompany === "002" && manejaCentroCosto) {
                 console.log("la cuenta maneja centro de costo, se pone generico")
                 codigoCentroCosto = CellOperations.addCcharacterToTheRight('generico', 15, ' ')
                 console.log("codigoCentroCosto:", codigoCentroCosto)
