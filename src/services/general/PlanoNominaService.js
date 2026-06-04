@@ -3,7 +3,7 @@ import fs from 'fs';
 import CellOperations from '../../utils/CellOperations.js';
 import RecordService from './RecordService.js';
 import { promises as fsp } from 'fs'; // Importamos fs.promises
-import account from '../../files/accounts.js';
+import account from '../../../parameters/accountparameters.js'
 import { normalizeCentroOperacionMovimiento } from './helpers/centroOperacionHelper.js';
 
 const CENTRO_OPERACION_POR_COMPANY = {
