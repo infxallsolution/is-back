@@ -148,6 +148,7 @@ const accounts =[
   { "codigo": "74050910", "manejaCentroCosto": false },
   { "codigo": "74050912", "manejaCentroCosto": true },
   { "codigo": "74050915", "manejaCentroCosto": true },
+  { "codigo": "7205080127", "manejaCentroCosto": true },
   { "codigo": "74050916", "manejaCentroCosto": false },
   { "codigo": "74052401", "manejaCentroCosto": false },
   { "codigo": "74052700", "manejaCentroCosto": false },
